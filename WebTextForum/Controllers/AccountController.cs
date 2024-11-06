@@ -12,9 +12,9 @@ namespace WebTextForum.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IAppUserService _appUserService;
-        private readonly SignInManager<AppUser> _userManager;
+        private readonly SignInManager<IdentityUser> _userManager;
 
-        public AccountController(ILogger<AccountController> logger, IAppUserService appUserService, SignInManager<AppUser> userManager)
+        public AccountController(ILogger<AccountController> logger, IAppUserService appUserService, SignInManager<IdentityUser> userManager)
         {
             _logger = logger;
             _appUserService = appUserService;
@@ -30,19 +30,11 @@ namespace WebTextForum.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login(AppUser user)
+        public async Task<IActionResult> Login(AppUserViewModel user)
         {
             var login = await _appUserService.Login(user);
             if (login)
             {
-                // no lockout if failure....!
-                try { 
-                    await _userManager.PasswordSignInAsync(user, Security.HashedPassword(user.Password), isPersistent: false, false); 
-                    user.Password = Security.HashedPassword(user.Password);
-                    await _userManager.SignInAsync(user, false);
-                }
-                catch (Exception ex) 
-                { }
                 return RedirectToAction("Index", "Home");
             }
             return View(new AppUserViewModel { UserName = user.UserName, Successful = false });

@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using WebTextForum.Helpers;
 using WebTextForum.Interfaces;
-using WebTextForum.Models;
-using WebTextForum.Repository;
 using WebTextForum.Services;
 
 namespace WebTextForum
@@ -53,13 +51,11 @@ namespace WebTextForum
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddSqlite<DataContext>("DataSource=WebTextForum.db");
-            services.AddTransient<IAppUserRepository, AppUserRepository>();
-            services.AddTransient<IAppUserRepository, AppUserRepository>();
             services.AddTransient<IAppUserService, AppUserService>();
 
             services.AddAuthorization();
-            services.AddAuthentication().AddCookie(Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme);
-            services.AddIdentityCore<AppUser>().AddEntityFrameworkStores<DataContext>()
+            services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
+            services.AddIdentityCore<IdentityUser>().AddEntityFrameworkStores<DataContext>()
                 .AddApiEndpoints();
             services.AddDbContext<DataContext>();
 

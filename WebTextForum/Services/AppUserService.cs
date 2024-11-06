@@ -1,28 +1,26 @@
-﻿using WebTextForum.Helpers;
+﻿using Microsoft.AspNetCore.Identity;
 using WebTextForum.Interfaces;
-using WebTextForum.Models;
+using WebTextForum.ModelView;
 
 namespace WebTextForum.Services
 {
     public class AppUserService : IAppUserService
     {
-        private readonly IAppUserRepository _repository;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AppUserService(IAppUserRepository repository)
+        public AppUserService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
-            _repository = repository;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        public async Task<bool> Login(AppUser user)
+        public async Task<bool> Login(AppUserViewModel user)
         {
-            var userFromDb = await _repository.GetAsync(user.UserName);
-            
-            if (userFromDb == null)
-            {
-                return false;
-            }
+            IdentityUser signedUser = await _userManager.FindByNameAsync(user.UserName.ToUpper());
+            var result = await _signInManager.PasswordSignInAsync(signedUser.UserName, user.Password, false, false);
 
-            return string.Equals(Security.HashedPassword(user.Password), userFromDb.Password);
+            return result.Succeeded;
         }
     }
 }

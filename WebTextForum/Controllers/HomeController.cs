@@ -27,18 +27,6 @@ namespace WebTextForum.Controllers
             return View(new AppUserViewModel());
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Index(AppUser user)
-        {
-            var login = await _appUserService.Login(user);
-            if (login)
-            {
-                
-                return Redirect("Forum");
-            }
-            return View(new AppUserViewModel {UserName = user.UserName, Successful = false });
-        }
-
         public IActionResult Privacy()
         {
             return View();
