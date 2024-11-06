@@ -1,3 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using WebTextForum.Helpers;
+using WebTextForum.Interfaces;
+using WebTextForum.Models;
+using WebTextForum.Repository;
+using WebTextForum.Services;
+
 namespace WebTextForum
 {
     public class Program
@@ -6,10 +15,18 @@ namespace WebTextForum
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            var services = builder.Services;
 
+            ConfigureServices(services);
+            
             var app = builder.Build();
+
+            // migrate any database changes on startup (includes initial db creation)
+            using (var scope = app.Services.CreateScope())
+            {
+                var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                dataContext.Database.EnsureCreated();
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -28,9 +45,31 @@ namespace WebTextForum
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Login}");
 
             app.Run();
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSqlite<DataContext>("DataSource=WebTextForum.db");
+            services.AddTransient<IAppUserRepository, AppUserRepository>();
+            services.AddTransient<IAppUserRepository, AppUserRepository>();
+            services.AddTransient<IAppUserService, AppUserService>();
+
+            services.AddAuthorization();
+            services.AddAuthentication().AddCookie(Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme);
+            services.AddIdentityCore<AppUser>().AddEntityFrameworkStores<DataContext>()
+                .AddApiEndpoints();
+            services.AddDbContext<DataContext>();
+
+            services.AddControllersWithViews(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                 .RequireAuthenticatedUser()
+                                 .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
         }
     }
 }

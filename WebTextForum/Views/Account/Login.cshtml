@@ -1,0 +1,23 @@
+﻿@model WebTextForum.ModelView.AppUserViewModel;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    @{
+        if (!Model.Successful.GetValueOrDefault(true))
+        {
+            <span>Your login was not successful</span>    
+        }
+    }
+    <form method="post">
+        @Html.LabelFor(u => u.UserName)
+        @Html.TextBoxFor(u => u.UserName)
+        <br />
+        @Html.LabelFor(u => u.Password)
+        @Html.PasswordFor(u => u.Password)
+        <input type="submit" value="Login">
+    </form>
+    <p>Please enter your Name and Password to enter and participate - or you can just go to the Forum and view the details</p>
+</div>
