@@ -35,7 +35,7 @@ namespace WebTextForum.Controllers
             var login = await _appUserService.Login(user);
             if (login)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Forum");
             }
             return View(new AppUserViewModel { UserName = user.UserName, Successful = false });
         }

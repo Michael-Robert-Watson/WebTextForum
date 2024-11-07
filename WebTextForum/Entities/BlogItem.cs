@@ -17,5 +17,7 @@ namespace WebTextForum.Entities
         [ForeignKey("BlogItemParentId")]
         public virtual BlogItem BlogItemParent { get; set; }
         public int? BlogItemParentId { get; set; }
+        public ICollection<BlogItemLike> Likes { get; set; }
+        public ICollection<BlogItemTag> Tags { get; set; }
     }
 }

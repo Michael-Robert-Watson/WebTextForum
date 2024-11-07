@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+table tr.forum_style {
+    background-color: #FFF;
+    cursor:pointer
+}
+
+    table tr.forum_style:hover {
+        background-color: silver;
+    }

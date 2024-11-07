@@ -1,30 +1,31 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text;
 using WebTextForum.Interfaces;
 using WebTextForum.Models;
 using WebTextForum.ModelView;
 
 namespace WebTextForum.Controllers
 {
-    public class HomeController : Controller
+    public class ForumController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<ForumController> _logger;
         private readonly IAppUserService _appUserService;
+        private readonly IBlogItemService _blogItemService;
 
-        public HomeController(ILogger<HomeController> logger, IAppUserService appUserService)
+        public ForumController(ILogger<ForumController> logger, IAppUserService appUserService, IBlogItemService blogItemService)
         {
             _logger = logger;
             _appUserService = appUserService;
+            _blogItemService = blogItemService;
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(new AppUserViewModel());
+            BlogItemsViewModel model = await _blogItemService.GetBlogItemsAsync(0, 20, User.Identity);
+            return View(model);
         }
 
         public IActionResult Privacy()

@@ -1,0 +1,54 @@
+﻿@model WebTextForum.ModelView.BlogItemsViewModel;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Home</h1>
+</div>
+
+<table>
+    <tr>
+        <th>Created</th>
+        <th>Created by</th>
+        <th>Likes</th>
+        <th>Comment</th>
+    </tr>
+    @{foreach(var item in Model.Items)
+    {
+                <tr class="forum_style trItem" blogId="@item.Id">
+                    <td>@(item.CreatedDate.ToString("dd MMM yyyy HH:mm"))</td>
+                    <td>@(item.User.UserName)</td>
+                    <td>@(item.Likes?.Count)</td>
+                    <td>@(item.Comment)</td>
+                </tr>
+    }}
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="closeModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.trItem').on('click', function () { 
+        $('#myModal').modal('toggle');
+    });
+    $('.closeModal').on('click', () => {
+        $('#myModal').modal('hide');
+    });
+</script>

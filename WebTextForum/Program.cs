@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using WebTextForum.Helpers;
 using WebTextForum.Interfaces;
+using WebTextForum.Repository;
 using WebTextForum.Services;
 
 namespace WebTextForum
@@ -29,7 +30,7 @@ namespace WebTextForum
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Forum/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -51,7 +52,9 @@ namespace WebTextForum
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddSqlite<DataContext>("DataSource=WebTextForum.db");
+            services.AddTransient<IBlogItemService, BlogItemService>();
             services.AddTransient<IAppUserService, AppUserService>();
+            services.AddTransient<IBlogItemsRepository, BlogItemRepository>();
 
             services.AddAuthorization();
             services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
