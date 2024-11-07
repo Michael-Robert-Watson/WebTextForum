@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using WebTextForum.Entities;
 using WebTextForum.Models;
 
 namespace WebTextForum.Helpers
@@ -11,13 +12,39 @@ namespace WebTextForum.Helpers
         public UserManager<IdentityUser> _userManager;
         public RoleManager<IdentityRole> _roleManager;
 
+        public DbSet<BlogItem> BlogItems { get; set; }
+        public DbSet<Tag> Tags{ get; set; }
+        public DbSet<BlogItemLike> BlogItemLikes { get; set; }
+        public DbSet<BlogItemTag> BlogItemTags { get; set; }
+
         public DataContext(DbContextOptions<DataContext> options)
              : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<AppUser>().HasData(new AppUser { Name = "admin", Password = Security.HashedPassword("P@55wor$"), Id = 1 });
+
+            modelBuilder.Entity<Tag>().HasData(
+                new Tag
+                {
+                    Id = 1,
+                    Name = "Misleading or False Information"
+                },
+                new Tag
+                {
+                    Id = 2,
+                    Name = "News"
+                },
+                new Tag
+                {
+                    Id = 3,
+                    Name = "Personal"
+                },
+                new Tag
+                {
+                    Id = 4,
+                    Name = "Code"
+                });
 
             //a hasher to hash the password before seeding the user to the db
             var hasher = new PasswordHasher<IdentityUser>();
@@ -30,9 +57,9 @@ namespace WebTextForum.Helpers
             name = "User";
             string userRoleId = createRole(modelBuilder, name);
             CreateUser(modelBuilder, hasher, userRoleId, $"{name}1", password, $"{name}1@mail.com");
-            CreateUser(modelBuilder, hasher, userRoleId, $"{name}2", password, $"{name}1@mail.com");
-            CreateUser(modelBuilder, hasher, userRoleId, $"{name}3", password, $"{name}1@mail.com");
-            CreateUser(modelBuilder, hasher, userRoleId, $"{name}4", password, $"{name}1@mail.com");
+            CreateUser(modelBuilder, hasher, userRoleId, $"{name}2", password, $"{name}2@mail.com");
+            CreateUser(modelBuilder, hasher, userRoleId, $"{name}3", password, $"{name}3@mail.com");
+            CreateUser(modelBuilder, hasher, userRoleId, $"{name}4", password, $"{name}4@mail.com");
         }
 
         private static void CreateUser(ModelBuilder modelBuilder, PasswordHasher<IdentityUser> hasher, string UserRoleId, string name, string password, string email)
