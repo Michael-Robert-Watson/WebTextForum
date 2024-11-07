@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Security.Principal;
-using WebTextForum.ModelView;
+﻿using System.Security.Principal;
+using WebTextForum.ViewModel;
 
 namespace WebTextForum.Interfaces
 {
     public interface IBlogItemService
     {
+        Task<BlogItemViewModel> GetBlogItemAsync(string id, System.Security.Claims.ClaimsPrincipal user);
+        Task<BlogItemViewModel> GetBlogItemLikeAsync(string id, System.Security.Claims.ClaimsPrincipal user);
         Task<BlogItemsViewModel> GetBlogItemsAsync(int pageId, int perPage, IIdentity user);
     }
 }

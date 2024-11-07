@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebTextForum.Interfaces;
 using WebTextForum.Models;
-using WebTextForum.ModelView;
+using WebTextForum.ViewModel;
 
 namespace WebTextForum.Controllers
 {
@@ -37,6 +37,21 @@ namespace WebTextForum.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        [Route("Forum/BlogDetails/{id}")]
+        public async Task<JsonResult> BlogDetails([FromRoute] string id)
+        {
+            var item = await _blogItemService.GetBlogItemAsync(id, User);
+            return new JsonResult(item);
+        }
+        [HttpPatch]
+        [Route("Forum/BlogDetailsLike/{id}")]
+        public async Task<JsonResult> BlogDetailsLike([FromRoute] string id)
+        {
+            var item = await _blogItemService.GetBlogItemLikeAsync(id, User);
+            return new JsonResult(item);
         }
     }
 }

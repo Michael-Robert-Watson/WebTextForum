@@ -1,6 +1,7 @@
-﻿@model WebTextForum.ModelView.BlogItemsViewModel;
+﻿@model WebTextForum.ViewModel.BlogItemsViewModel;
 @{
     ViewData["Title"] = "Home Page";
+    var userCanSave = User.Claims.Any(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", StringComparison.InvariantCultureIgnoreCase) && c.Value.Equals("Moderator", StringComparison.InvariantCultureIgnoreCase));
 }
 
 <div class="text-center">
@@ -16,12 +17,12 @@
     </tr>
     @{foreach(var item in Model.Items)
     {
-                <tr class="forum_style trItem" blogId="@item.Id">
-                    <td>@(item.CreatedDate.ToString("dd MMM yyyy HH:mm"))</td>
-                    <td>@(item.User.UserName)</td>
-                    <td>@(item.Likes?.Count)</td>
-                    <td>@(item.Comment)</td>
-                </tr>
+                                            <tr class="forum_style trItem" blogId="@item.Id">
+                                                <td>@(item.CreatedDate.ToString("dd MMM yyyy HH:mm"))</td>
+                                                <td>@(item.User.UserName)</td>
+                                                <td>@(item.Likes?.Count)</td>
+                                                <td>@(item.Comment)</td>
+                                            </tr>
     }}
 </table>
 
@@ -34,21 +35,86 @@
                 <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
             <div class="modal-body">
-                ...
+                <div class="row form-group">
+                    <label class="form-label">Date Created</label>
+                    <span id="dateCreated"></span>
+                </div>
+                <div class="row form-group">
+                    <label class="form-label">Created By</label>
+                    <span id="user"></span>
+                </div>
+                <div class="row form-group">
+                    <label class="form-label">Comment</label>
+                    <span id="comment"></span>
+                </div>
+                <div class="row form-group" id="grpTags">
+                    <label class="form-label">Tags</label>
+                    <span id="tags"></span>
+                </div>
+                <div class="row">
+                    <label class="form-label">Like (<span id="likes"></span>)</label>
+                    <input type="checkbox" id="chkLike" />
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                @if (userCanSave)
+                {
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                }
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    $('.trItem').on('click', function () { 
+    let blogId = 0;
+    $('#chkLike').on('change', (e) => {
+        let val = $(e.currentTarget).prop('checked');
+        likeItemToggle(blogId);
+    });
+    $('.trItem').on('click', function (e) { 
+        blogId = $(e.currentTarget).attr('blogId');
+        loadItem(blogId);
         $('#myModal').modal('toggle');
     });
     $('.closeModal').on('click', () => {
         $('#myModal').modal('hide');
     });
+    function loadItem(id)
+    {        
+        $.ajax({
+            url: '/forum/BlogDetails/' + id,
+            success:
+                function (result) {
+                    $('#dateCreated').text(result.createdDate);
+                    $('#user').text(result.user);
+                    $('#comment').text(result.comment);
+                    $('#likes').text(result.likes);
+                    $('#chkLike').prop('checked', result.likedByUser);
+                    if (!result.tags || result.tags.length == 0) {
+                        $('#grpTags').hide();
+                    }
+                    else {
+                        $('#grpTags').show();
+                        $('#tags').html(result.tags.map((x) => `<li value=${x.value}>${x.text}</li>`));
+                    }
+                }
+        });
+    }
+    function likeItemToggle(id)
+    {        
+        $.ajax({
+            url: '/forum/BlogDetailsLike/' + id,
+            type:'PATCH',
+            success:
+                function (result) {
+                    $('#dateCreated').text(result.createdDate);
+                    $('#user').text(result.user);
+                    $('#comment').text(result.comment);
+                    $('#likes').text(result.likes);
+                    $('#tags').html(result.tags.map((x) => `<li value=${x.value}>${x.text}</li>`));
+                }
+        });
+    }
 </script>

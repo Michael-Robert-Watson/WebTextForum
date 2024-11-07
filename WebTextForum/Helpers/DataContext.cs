@@ -27,22 +27,22 @@ namespace WebTextForum.Helpers
             modelBuilder.Entity<Tag>().HasData(
                 new Tag
                 {
-                    Id = 1,
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Misleading or False Information"
                 },
                 new Tag
                 {
-                    Id = 2,
+                    Id = Guid.NewGuid().ToString(),
                     Name = "News"
                 },
                 new Tag
                 {
-                    Id = 3,
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Personal"
                 },
                 new Tag
                 {
-                    Id = 4,
+                    Id = Guid.NewGuid().ToString(),
                     Name = "Code"
                 });
 

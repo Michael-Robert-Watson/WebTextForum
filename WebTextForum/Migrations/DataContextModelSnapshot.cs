@@ -45,13 +45,13 @@ namespace WebTextForum.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "05507b6f-3d69-4b68-b53f-80a0128f56a8",
+                            Id = "782e4038-2251-4c3e-8865-bd216025d3f5",
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         },
                         new
                         {
-                            Id = "4fc03002-6ae6-4030-84b4-4048cd4c4422",
+                            Id = "3bde21b8-da59-4cab-a137-067e929313b8",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -146,76 +146,76 @@ namespace WebTextForum.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "04628fcb-8950-43ca-892d-cbb12188a3ce",
+                            Id = "f5023016-8437-46a0-b825-c05530f3a7ea",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c941bdb5-7731-488d-915c-68369d93f827",
+                            ConcurrencyStamp = "c7aeaac5-a940-4992-808a-9b4229050c50",
                             Email = "Moderator1@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "MODERATOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMN+VlSNOhgfgApe86Cnh8nbMtanSBRd7f1j+xkhknjx0HuXVVPa6WTKwhzK7g5nQQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOd+GKNkAuwruiqWgEcj1W/j0+O249a1Ke6eq2b2Bp5KWHciVPfTltBj4vH0N3uLmw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a6363ff1-87fa-48da-90a6-523ef553546e",
+                            SecurityStamp = "2e9a7d1a-fc07-4f77-a41a-9a29c9852002",
                             TwoFactorEnabled = false,
                             UserName = "Moderator"
                         },
                         new
                         {
-                            Id = "a2e4511d-1d6a-4364-8761-0cf74828e790",
+                            Id = "230d3eb3-b1ce-45ae-af7e-56d8a0e60aef",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8999439b-e4c9-479e-9808-3256f17cc8bf",
+                            ConcurrencyStamp = "6cd71038-245a-40e9-8bc3-b26e24c53a08",
                             Email = "User1@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "USER1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFBWg6nDvsn6mJjy7Ra4cIQItA+FOmewiIMOKKMwgbnoMSiM2lhxBV5eBZ2Es0/b7Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELPWAR+OlNs1HXHOnupqcwWoGpQRu2p6PnshpBL1Jx9TfjWaKwY23dxIDq2KUsRlfg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6f827187-0d89-45cc-9564-4a965d6104f4",
+                            SecurityStamp = "f041a034-c02b-464e-ab63-37fd758c799f",
                             TwoFactorEnabled = false,
                             UserName = "User1"
                         },
                         new
                         {
-                            Id = "5bb0ee5a-4a6d-4233-aa05-5fb1b49e0c6b",
+                            Id = "09ad6cdb-c0c1-4cdb-b5ce-08ff3117f781",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "93338151-9ec2-43aa-b8bd-3e2e2f8d47e8",
+                            ConcurrencyStamp = "d3d62e20-8f62-4016-859d-bc2fd519be68",
                             Email = "User2@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "USER2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMKev3Sc0Te1oFGlPB55Xo7nlJdCwez13OwcRtSD/BZCC5JIes2YFiqWZjW2wHT1rA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECY1+kyyKBlVJ2WpP2wCfKIxuvLMXGAGJFKsbCRNMjzncEYZP8Q35A7FZYWmZsMVqQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f6687675-ff27-4f80-b5ca-3c39e3e1e138",
+                            SecurityStamp = "ff765305-1b85-4dc1-8289-da6f78a519c7",
                             TwoFactorEnabled = false,
                             UserName = "User2"
                         },
                         new
                         {
-                            Id = "0639fdf2-e318-4362-bcb3-ada6d381081a",
+                            Id = "e746f378-4199-4208-bdaf-3c22627b6b5c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b50badb-fc7e-425a-aa71-b5a9924c6990",
+                            ConcurrencyStamp = "472ab50d-288e-41c5-9b83-ccb47bcd44d9",
                             Email = "User3@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "USER3",
-                            PasswordHash = "AQAAAAIAAYagAAAAECK4R9dmaij91atlj7Zrs2OxDH6Lf+2OcuJMJH2hGfVfgHxWH/9G8+DerslQkbDrrg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEChwIzI4uSgPfsmdqtSAiehuZycmX+7TFycxutUgY0cZ7sTNm5rklI5Jv0s1dsOgaA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8d1bf58e-9598-40dc-b7aa-072293d6a51b",
+                            SecurityStamp = "506d7807-67b6-4ebc-a5cb-8ce17f0a4b61",
                             TwoFactorEnabled = false,
                             UserName = "User3"
                         },
                         new
                         {
-                            Id = "456241b5-dbbd-4cb4-84f2-f8648a7a9932",
+                            Id = "8e167651-3eca-48a9-8665-05db9268765a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "28dcf23d-5281-4ea6-926e-79787872189b",
+                            ConcurrencyStamp = "ce00b57d-a37b-4275-bc9a-b3cfb2ca63ac",
                             Email = "User4@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "USER4",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO1wmhCnSNNO7P6evtBASkqgRHb+XWr5+UmM7/vFYXsuRPmJm5oVUJld5XlFt1R5RQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOS2lQkHgZ8WYukbGdc/D7XkpZEGdDCYcGkU5Fr+PD6xhmkBqQBxS+2yZSIXTeHDCw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "930c2a30-2d13-4470-8484-a3da76ec00c1",
+                            SecurityStamp = "f3c55408-d928-4d6f-9d06-069d6351a37e",
                             TwoFactorEnabled = false,
                             UserName = "User4"
                         });
@@ -283,28 +283,28 @@ namespace WebTextForum.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "04628fcb-8950-43ca-892d-cbb12188a3ce",
-                            RoleId = "05507b6f-3d69-4b68-b53f-80a0128f56a8"
+                            UserId = "f5023016-8437-46a0-b825-c05530f3a7ea",
+                            RoleId = "782e4038-2251-4c3e-8865-bd216025d3f5"
                         },
                         new
                         {
-                            UserId = "a2e4511d-1d6a-4364-8761-0cf74828e790",
-                            RoleId = "4fc03002-6ae6-4030-84b4-4048cd4c4422"
+                            UserId = "230d3eb3-b1ce-45ae-af7e-56d8a0e60aef",
+                            RoleId = "3bde21b8-da59-4cab-a137-067e929313b8"
                         },
                         new
                         {
-                            UserId = "5bb0ee5a-4a6d-4233-aa05-5fb1b49e0c6b",
-                            RoleId = "4fc03002-6ae6-4030-84b4-4048cd4c4422"
+                            UserId = "09ad6cdb-c0c1-4cdb-b5ce-08ff3117f781",
+                            RoleId = "3bde21b8-da59-4cab-a137-067e929313b8"
                         },
                         new
                         {
-                            UserId = "0639fdf2-e318-4362-bcb3-ada6d381081a",
-                            RoleId = "4fc03002-6ae6-4030-84b4-4048cd4c4422"
+                            UserId = "e746f378-4199-4208-bdaf-3c22627b6b5c",
+                            RoleId = "3bde21b8-da59-4cab-a137-067e929313b8"
                         },
                         new
                         {
-                            UserId = "456241b5-dbbd-4cb4-84f2-f8648a7a9932",
-                            RoleId = "4fc03002-6ae6-4030-84b4-4048cd4c4422"
+                            UserId = "8e167651-3eca-48a9-8665-05db9268765a",
+                            RoleId = "3bde21b8-da59-4cab-a137-067e929313b8"
                         });
                 });
 
@@ -329,12 +329,11 @@ namespace WebTextForum.Migrations
 
             modelBuilder.Entity("WebTextForum.Entities.BlogItem", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("BlogItemParentId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("BlogItemParentId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -358,9 +357,11 @@ namespace WebTextForum.Migrations
 
             modelBuilder.Entity("WebTextForum.Entities.BlogItemLike", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BlogItemId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
@@ -370,27 +371,34 @@ namespace WebTextForum.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BlogItemId");
 
                     b.ToTable("BlogItemLikes");
                 });
 
             modelBuilder.Entity("WebTextForum.Entities.BlogItemTag", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BlogItemId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TagId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("TagId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BlogItemId");
 
                     b.HasIndex("TagId");
 
@@ -401,9 +409,8 @@ namespace WebTextForum.Migrations
 
             modelBuilder.Entity("WebTextForum.Entities.Tag", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -416,22 +423,22 @@ namespace WebTextForum.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "be899515-7e6a-4217-b3a4-2354bf79c7cc",
                             Name = "Misleading or False Information"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = "ac65add2-97bc-415f-bce4-eaa5e9a39cb8",
                             Name = "News"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = "8af690cf-0019-4fe6-9f71-07699a00707e",
                             Name = "Personal"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = "59af8d90-c923-458b-ae86-c27f25ea5a69",
                             Name = "Code"
                         });
                 });
@@ -504,9 +511,20 @@ namespace WebTextForum.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebTextForum.Entities.BlogItemLike", b =>
+                {
+                    b.HasOne("WebTextForum.Entities.BlogItem", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("BlogItemId");
+                });
+
             modelBuilder.Entity("WebTextForum.Entities.BlogItemTag", b =>
                 {
-                    b.HasOne("WebTextForum.Entities.BlogItemTag", "Tag")
+                    b.HasOne("WebTextForum.Entities.BlogItem", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("BlogItemId");
+
+                    b.HasOne("WebTextForum.Entities.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -521,6 +539,13 @@ namespace WebTextForum.Migrations
                     b.Navigation("Tag");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebTextForum.Entities.BlogItem", b =>
+                {
+                    b.Navigation("Likes");
+
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

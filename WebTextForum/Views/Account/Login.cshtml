@@ -1,4 +1,4 @@
-﻿@model WebTextForum.ModelView.AppUserViewModel;
+﻿@model WebTextForum.ViewModel.AppUserViewModel;
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -17,6 +17,7 @@
         <br />
         @Html.LabelFor(u => u.Password)
         @Html.PasswordFor(u => u.Password)
+        <br />
         <input type="submit" value="Login">
     </form>
     <p>Please enter your Name and Password to enter and participate - or you can just go to the Forum and view the details</p>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using WebTextForum.Interfaces;
-using WebTextForum.ModelView;
+using WebTextForum.ViewModel;
 
 namespace WebTextForum.Services
 {

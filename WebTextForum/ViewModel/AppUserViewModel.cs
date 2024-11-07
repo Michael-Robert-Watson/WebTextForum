@@ -1,4 +1,4 @@
-﻿namespace WebTextForum.ModelView
+﻿namespace WebTextForum.ViewModel
 {
     public class AppUserViewModel
     {

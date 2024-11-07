@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using WebTextForum.Entities;
 
-namespace WebTextForum.ModelView
+namespace WebTextForum.ViewModel
 {
     public class BlogItemsViewModel
     {

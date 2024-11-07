@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using WebTextForum.Helpers;
 using WebTextForum.Interfaces;
-using WebTextForum.Models;
-using WebTextForum.ModelView;
+using WebTextForum.ViewModel;
 
 namespace WebTextForum.Controllers
 {

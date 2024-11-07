@@ -1,5 +1,4 @@
-﻿using WebTextForum.Models;
-using WebTextForum.ModelView;
+﻿using WebTextForum.ViewModel;
 
 namespace WebTextForum.Interfaces
 {

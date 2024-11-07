@@ -11,8 +11,8 @@ using WebTextForum.Helpers;
 namespace WebTextForum.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241106203625_AppUsers")]
-    partial class AppUsers
+    [Migration("20241107123909_setupIdentityAutoGenerate")]
+    partial class setupIdentityAutoGenerate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,13 +48,13 @@ namespace WebTextForum.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e98eeb40-6d93-417d-9233-51738034bf0a",
+                            Id = "782e4038-2251-4c3e-8865-bd216025d3f5",
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         },
                         new
                         {
-                            Id = "8c7c2a0a-e24b-4880-b519-56226468779f",
+                            Id = "3bde21b8-da59-4cab-a137-067e929313b8",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -145,122 +145,80 @@ namespace WebTextForum.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser<string>", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IdentityUser<string>");
 
                     b.HasData(
                         new
                         {
-                            Id = "884b38aa-ed0b-43b6-a8eb-ef26a0491442",
+                            Id = "f5023016-8437-46a0-b825-c05530f3a7ea",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "64d856ed-373b-4ece-9ecd-6524453f7361",
+                            ConcurrencyStamp = "c7aeaac5-a940-4992-808a-9b4229050c50",
+                            Email = "Moderator1@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "Moderator",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPFo+niX54/SLM56GzVRJHbh3tus/PbyQX7M+Pz2MImC3q9F3LmnnOfGiucMAinuhw==",
+                            NormalizedUserName = "MODERATOR",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOd+GKNkAuwruiqWgEcj1W/j0+O249a1Ke6eq2b2Bp5KWHciVPfTltBj4vH0N3uLmw==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "2e9a7d1a-fc07-4f77-a41a-9a29c9852002",
                             TwoFactorEnabled = false,
                             UserName = "Moderator"
                         },
                         new
                         {
-                            Id = "aece1d40-bead-46e7-8399-35e50403b208",
+                            Id = "230d3eb3-b1ce-45ae-af7e-56d8a0e60aef",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "93ecb377-7b4c-4047-84db-27c6773651c8",
+                            ConcurrencyStamp = "6cd71038-245a-40e9-8bc3-b26e24c53a08",
+                            Email = "User1@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "User1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAGxHKJxVSf673aFOxkVDhJxFA5zDIQTO3nKGeIjL81E39oGgNGrCRm0VothLZqRYw==",
+                            NormalizedUserName = "USER1",
+                            PasswordHash = "AQAAAAIAAYagAAAAELPWAR+OlNs1HXHOnupqcwWoGpQRu2p6PnshpBL1Jx9TfjWaKwY23dxIDq2KUsRlfg==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "f041a034-c02b-464e-ab63-37fd758c799f",
                             TwoFactorEnabled = false,
                             UserName = "User1"
                         },
                         new
                         {
-                            Id = "b56d09df-77b7-4102-b83f-ce8de438d4cf",
+                            Id = "09ad6cdb-c0c1-4cdb-b5ce-08ff3117f781",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a88cb3df-eebb-4e57-b207-a3baab9b3e35",
+                            ConcurrencyStamp = "d3d62e20-8f62-4016-859d-bc2fd519be68",
+                            Email = "User2@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "User2",
-                            PasswordHash = "AQAAAAIAAYagAAAAENJzJFpI4tMZjqKc96x4wJjLgUUD3v0RudarwhQdKnQOdMK44uVW++xgeFU5UzjP9A==",
+                            NormalizedUserName = "USER2",
+                            PasswordHash = "AQAAAAIAAYagAAAAECY1+kyyKBlVJ2WpP2wCfKIxuvLMXGAGJFKsbCRNMjzncEYZP8Q35A7FZYWmZsMVqQ==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "ff765305-1b85-4dc1-8289-da6f78a519c7",
                             TwoFactorEnabled = false,
                             UserName = "User2"
                         },
                         new
                         {
-                            Id = "b2a3be59-1360-4a74-9efd-dd76ce216f4c",
+                            Id = "e746f378-4199-4208-bdaf-3c22627b6b5c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f40f99bb-c1d5-46d9-8a29-d7a96df18d6e",
+                            ConcurrencyStamp = "472ab50d-288e-41c5-9b83-ccb47bcd44d9",
+                            Email = "User3@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "User3",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHIscuaLzdbV4oCmtGRaKU24saUHsbFj9MGmp5wGItKQhNMYCY5ageRABCuyw3b49g==",
+                            NormalizedUserName = "USER3",
+                            PasswordHash = "AQAAAAIAAYagAAAAEChwIzI4uSgPfsmdqtSAiehuZycmX+7TFycxutUgY0cZ7sTNm5rklI5Jv0s1dsOgaA==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "506d7807-67b6-4ebc-a5cb-8ce17f0a4b61",
                             TwoFactorEnabled = false,
                             UserName = "User3"
                         },
                         new
                         {
-                            Id = "713596b9-b4d0-426d-9b98-fd93b53b5fe1",
+                            Id = "8e167651-3eca-48a9-8665-05db9268765a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "912d703d-137d-4e41-8b00-ee7cf20d3fd6",
+                            ConcurrencyStamp = "ce00b57d-a37b-4275-bc9a-b3cfb2ca63ac",
+                            Email = "User4@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "User4",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOm1ssZU/T8Xs/XOFkuzyZ5puJjbpBgWSzgATd05h7BXseM7HM+1xBSLVOznWV5YHQ==",
+                            NormalizedUserName = "USER4",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOS2lQkHgZ8WYukbGdc/D7XkpZEGdDCYcGkU5Fr+PD6xhmkBqQBxS+2yZSIXTeHDCw==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "f3c55408-d928-4d6f-9d06-069d6351a37e",
                             TwoFactorEnabled = false,
                             UserName = "User4"
                         });
@@ -324,6 +282,33 @@ namespace WebTextForum.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "f5023016-8437-46a0-b825-c05530f3a7ea",
+                            RoleId = "782e4038-2251-4c3e-8865-bd216025d3f5"
+                        },
+                        new
+                        {
+                            UserId = "230d3eb3-b1ce-45ae-af7e-56d8a0e60aef",
+                            RoleId = "3bde21b8-da59-4cab-a137-067e929313b8"
+                        },
+                        new
+                        {
+                            UserId = "09ad6cdb-c0c1-4cdb-b5ce-08ff3117f781",
+                            RoleId = "3bde21b8-da59-4cab-a137-067e929313b8"
+                        },
+                        new
+                        {
+                            UserId = "e746f378-4199-4208-bdaf-3c22627b6b5c",
+                            RoleId = "3bde21b8-da59-4cab-a137-067e929313b8"
+                        },
+                        new
+                        {
+                            UserId = "8e167651-3eca-48a9-8665-05db9268765a",
+                            RoleId = "3bde21b8-da59-4cab-a137-067e929313b8"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -343,6 +328,122 @@ namespace WebTextForum.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("WebTextForum.Entities.BlogItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BlogItemParentId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogItemParentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BlogItems");
+                });
+
+            modelBuilder.Entity("WebTextForum.Entities.BlogItemLike", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BlogItemId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogItemId");
+
+                    b.ToTable("BlogItemLikes");
+                });
+
+            modelBuilder.Entity("WebTextForum.Entities.BlogItemTag", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BlogItemId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TagId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogItemId");
+
+                    b.HasIndex("TagId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BlogItemTags");
+                });
+
+            modelBuilder.Entity("WebTextForum.Entities.Tag", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "be899515-7e6a-4217-b3a4-2354bf79c7cc",
+                            Name = "Misleading or False Information"
+                        },
+                        new
+                        {
+                            Id = "ac65add2-97bc-415f-bce4-eaa5e9a39cb8",
+                            Name = "News"
+                        },
+                        new
+                        {
+                            Id = "8af690cf-0019-4fe6-9f71-07699a00707e",
+                            Name = "Personal"
+                        },
+                        new
+                        {
+                            Id = "59af8d90-c923-458b-ae86-c27f25ea5a69",
+                            Name = "Code"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -394,6 +495,60 @@ namespace WebTextForum.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebTextForum.Entities.BlogItem", b =>
+                {
+                    b.HasOne("WebTextForum.Entities.BlogItem", "BlogItemParent")
+                        .WithMany()
+                        .HasForeignKey("BlogItemParentId");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BlogItemParent");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebTextForum.Entities.BlogItemLike", b =>
+                {
+                    b.HasOne("WebTextForum.Entities.BlogItem", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("BlogItemId");
+                });
+
+            modelBuilder.Entity("WebTextForum.Entities.BlogItemTag", b =>
+                {
+                    b.HasOne("WebTextForum.Entities.BlogItem", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("BlogItemId");
+
+                    b.HasOne("WebTextForum.Entities.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tag");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebTextForum.Entities.BlogItem", b =>
+                {
+                    b.Navigation("Likes");
+
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }
