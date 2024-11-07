@@ -19,5 +19,7 @@ namespace WebTextForum.ViewModel
         public object[] Tags { get; set; }
         [JsonPropertyName("likedByUser")]
         public bool LikedByUser { get; set; }
+        [JsonPropertyName("allTags")]
+        public object[] AllTags { get; set; }
     }
 }

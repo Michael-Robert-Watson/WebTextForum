@@ -46,12 +46,21 @@ namespace WebTextForum.Controllers
             var item = await _blogItemService.GetBlogItemAsync(id, User);
             return new JsonResult(item);
         }
+        
         [HttpPatch]
         [Route("Forum/BlogDetailsLike/{id}")]
         public async Task<JsonResult> BlogDetailsLike([FromRoute] string id)
         {
             var item = await _blogItemService.GetBlogItemLikeAsync(id, User);
             return new JsonResult(item);
+        }
+        
+        [HttpPost]
+        [Route("Forum/BlogDetailsUpdate/{id}")]
+        public async Task<JsonResult> BlogDetailsUpdate([FromRoute] string id, string[] tagIds)
+        {
+            await _blogItemService.UpdateTags(id, tagIds, User);
+            return new JsonResult(true);
         }
     }
 }

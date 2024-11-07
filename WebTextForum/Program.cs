@@ -55,6 +55,7 @@ namespace WebTextForum
             services.AddTransient<IBlogItemService, BlogItemService>();
             services.AddTransient<IAppUserService, AppUserService>();
             services.AddTransient<IBlogItemsRepository, BlogItemRepository>();
+            services.AddTransient<ITagsRepository, TagsRepository>();
 
             services.AddAuthorization();
             services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
