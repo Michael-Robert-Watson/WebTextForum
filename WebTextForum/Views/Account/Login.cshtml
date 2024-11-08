@@ -8,17 +8,36 @@
     @{
         if (!Model.Successful.GetValueOrDefault(true))
         {
-            <span>Your login was not successful</span>    
+            <span>Your login was not successful</span>
         }
     }
     <form method="post">
-        @Html.LabelFor(u => u.UserName)
-        @Html.TextBoxFor(u => u.UserName)
+        <div class="row justify-content-center">
+            <div class="col-auto">
+        <table class="col-lg-3 align-items-center">
+            <tr>
+                <td>
+                    @Html.LabelFor(u => u.UserName)
+                </td>
+                <td>
+                    @Html.TextBoxFor(u => u.UserName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(u => u.Password)
+                </td>
+                <td>
+                    @Html.PasswordFor(u => u.Password)
+                </td>
+            </tr>
+        </table>
+        </div></div>
+
+
         <br />
-        @Html.LabelFor(u => u.Password)
-        @Html.PasswordFor(u => u.Password)
         <br />
         <input type="submit" value="Login">
     </form>
-    <p>Please enter your Name and Password to enter and participate - or you can just go to the Forum and view the details</p>
+    <p>Please enter your Name and Password to enter and participate - or you can just go to the <a href="/Forum/index"">Forum</a> and view the details</p>
 </div>

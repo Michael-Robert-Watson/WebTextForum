@@ -27,10 +27,18 @@ namespace WebTextForum.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await _appUserService.LogOutAsync();
+            return RedirectToAction("Login");
+        }
+
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(AppUserViewModel user)
         {
-            var login = await _appUserService.Login(user);
+            var login = await _appUserService.LoginAsync(user);
             if (login)
             {
                 return RedirectToAction("Index", "Forum");

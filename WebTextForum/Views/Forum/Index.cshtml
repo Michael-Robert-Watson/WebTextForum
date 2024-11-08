@@ -2,10 +2,12 @@
 @{
     ViewData["Title"] = "Home Page";
     var userCanSave = User.Claims.Any(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", StringComparison.InvariantCultureIgnoreCase) && c.Value.Equals("Moderator", StringComparison.InvariantCultureIgnoreCase));
+    var userCanReply = User != null;
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Home</h1>
+    <h1 class="display-4">Welcome to the WebTextForum</h1>
+    <p>Where you can (when logged in) blog about things, the moderator will tag them and you can comment on the posts and like</p>.  If not logged in, you can read and like the posts.
 </div>
 
 <table class="col-lg-10 col-sm-12">
@@ -15,14 +17,16 @@
         <th>Likes</th>
         <th>Comment</th>
     </tr>
-    @{foreach(var item in Model.Items)
-    {
-        <tr class="forum_style trItem" blogId="@item.Id">
-            <td>@(item.CreatedDate.ToString("dd MMM yyyy HH:mm"))</td>
-            <td>@(item.User.UserName)</td>
-            <td>@(item.Likes?.Count)</td>
-            <td>@(item.Comment)</td>
-        </tr>
+    @{
+        foreach(var item in Model.Items)
+        {
+            var warning = item.Tags.Any(t=>t.TagId=="0");
+                        <tr class="forum_style trItem" blogId="@item.Id" @(warning?"style=background:coral":string.Empty)>
+                        <td>@(item.CreatedDate.ToString("dd MMM yyyy HH:mm"))</td>
+                        <td>@(item.User.UserName)</td>
+                        <td>@(item.Likes?.Count)</td>
+                        <td>@(item.Comment.Length>50?$"{item.Comment.Substring(0,50)}...":item.Comment)</td>
+                    </tr>
     }}
     @if (userCanSave)
     {
@@ -44,26 +48,38 @@
             </div>
             <div class="modal-body">
                 <div class="row form-group">
-                    <label class="form-label">Date Created<span id="dateCreated"></span></label>
+                    <label class="form-label">Date Created: <span id="dateCreated"></span></label>
                 </div>
                 <div class="row form-group">
-                    <label class="form-label">Created By<span id="user"></span></label>
+                    <label class="form-label">Created By: <span id="user"></span></label>
                 </div>
                 <div class="row form-group">
-                    <label class="form-label">Comment<span id="comment"></span></label>
+                    <label class="form-label">Comment: <span id="comment"></span></label>
                 </div>
                 <div class="row form-group" id="grpTags">
-                    <label class="form-label">Tags<span id="tags"></span></label>
+                    <label class="form-label">Tags: <span id="tags"></span></label>
                 </div>
                 <div class="row">
                     <label class="form-label">Like (<span id="likes"></span>)<input type="checkbox" id="chkLike" /></label>
+                </div>
+                <div class="row form-group" id="replys">
+                    <label class="form-label">Replies: <span id="reply"></span></label>
+                </div>
+                <div class="row form-group" id="replyCommentGroup">
+                    <label class="form-label">Comment</label>
+                    <textarea rows="5" cols="20" id="replyComment"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button>
                 @if (userCanSave)
                 {
-                    <button type="button" class="btn btn-primary" onclick="saveItemChanges()">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="cmdSaveChanges" onclick="saveItemChanges()">Save changes</button>
+                }
+                @if (userCanReply)
+                {
+                    <button type="button" class="btn btn-primary" id="cmdReply" onclick="addComment()">Reply to Post</button>
+                    <button type="button" class="btn btn-primary" id="cmdSaveReply" onclick="saveComment()">Save Reply</button>
                 }
             </div>
         </div>
@@ -75,20 +91,20 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="closeModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="closeAddModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="addModalLabel">Add Blog Post</h4>
             </div>
             <div class="modal-body">
                 <div class="row form-group">
                     <label class="form-label">Comment</label>
-                    <textarea rows="5" cols="20" id="comment"></textarea>
+                    <textarea rows="5" cols="20" id="addComment"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default closeAddModal" data-dismiss="modal">Close</button>
                 @if (userCanSave)
                 {
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAddItem()">Save changes</button>
                 }
             </div>
         </div>
@@ -97,7 +113,14 @@
 
 <script>
     let blogId = 0;
+    function addComment() {
+        $('#replyCommentGroup').show();
+        $('#cmdSaveReply').show();
+        $('#cmdSaveChanges').hide(); 
+        $('#cmdReply').hide();
+    }
     function addNewItem(){ 
+        // clean controls
         $('#addModal').modal('toggle');
     }
     $('#chkLike').on('change', (e) => {
@@ -112,6 +135,9 @@
     $('.closeModal').on('click', () => {
         $('#viewModal').modal('hide');
     });
+    $('.closeAddModal').on('click', () => {
+        $('#AddModal').modal('hide');
+    });
     function loadItem(id)
     {        
         $.ajax({
@@ -123,6 +149,8 @@
                     $('#comment').text(result.comment);
                     $('#likes').text(result.likes);
                     $('#chkLike').prop('checked', result.likedByUser);
+                    if (result.isYourComment) { $('#chkLike').hide(); }
+                    else { $('#chkLike').show(); }
     @if (userCanSave)
     {
     <text>
@@ -147,6 +175,13 @@
                     }
         </text>
     }
+                    if (result.replies && result.replies.length > 0) {
+                        $('#reply').html(result.replies.map((x) => `<hr /><p title='Replied by ${x.user} on ${x.createdDate}'>${x.comment}</p><hr />`));
+                        $('#replys').show();
+                    }
+                    else {
+                        $('#replys').hide();
+                    }
                 }
         });
     }
@@ -178,7 +213,39 @@
             success:
                 function (result) {
                     $('#viewModal').modal('hide');
+                    location.reload();
                 }
         });
     }
+    function saveAddItem() {
+        debugger;
+        var comment = $('#addComment').val();
+        $.ajax({
+            url: '/forum/BlogDetailsAddPost',
+            data: { newComment : comment },
+            type: 'POST',
+            success:
+                function (result) {
+                    $('#addModal').modal('hide');
+                    location.reload();
+                }
+        });
+    }
+    function saveComment() {
+        debugger;
+        var comment = $('#replyComment').val();
+        $.ajax({
+            url: '/forum/BlogDetailsAddReply/' + blogId,
+            data: { newComment : comment },
+            type: 'POST',
+            success:
+                function (result) {
+                    $('#viewModal').modal('hide');
+                    location.reload();
+                }
+        });
+    }
+    $('#replyCommentGroup').hide();
+    $('#cmdReply').show();
+    $('#cmdSaveReply').hide();
 </script>

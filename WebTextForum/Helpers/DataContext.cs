@@ -27,7 +27,7 @@ namespace WebTextForum.Helpers
             modelBuilder.Entity<Tag>().HasData(
                 new Tag
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = "0",
                     Name = "Misleading or False Information"
                 },
                 new Tag

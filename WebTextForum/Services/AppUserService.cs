@@ -15,12 +15,17 @@ namespace WebTextForum.Services
             _signInManager = signInManager;
         }
 
-        public async Task<bool> Login(AppUserViewModel user)
+        public async Task<bool> LoginAsync(AppUserViewModel user)
         {
             IdentityUser signedUser = await _userManager.FindByNameAsync(user.UserName.ToUpper());
             var result = await _signInManager.PasswordSignInAsync(signedUser.UserName, user.Password, false, false);
 
             return result.Succeeded;
+        }
+
+        public async Task LogOutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }

@@ -4,6 +4,7 @@ namespace WebTextForum.Interfaces
 {
     public interface IAppUserService
     {
-        public Task<bool> Login(AppUserViewModel user);
+        public Task<bool> LoginAsync(AppUserViewModel user);
+        Task LogOutAsync();
     }
 }

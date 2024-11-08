@@ -63,13 +63,14 @@ namespace WebTextForum
                 .AddApiEndpoints();
             services.AddDbContext<DataContext>();
 
-            services.AddControllersWithViews(config =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                                 .RequireAuthenticatedUser()
-                                 .Build();
-                config.Filters.Add(new AuthorizeFilter(policy));
-            });
+            services.AddControllersWithViews();
+            //services.AddControllersWithViews(config =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //                     .RequireAuthenticatedUser()
+            //                     .Build();
+            //    config.Filters.Add(new AuthorizeFilter(policy));
+            //});
         }
     }
 }

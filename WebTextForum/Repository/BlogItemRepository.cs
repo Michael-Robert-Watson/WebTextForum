@@ -14,6 +14,13 @@ namespace WebTextForum.Repository
             _dataContext = dataContext;
         }
 
+        public async Task<BlogItem> AddBlogItemsAsync(BlogItem item)
+        {
+            _dataContext.BlogItems.Add(item);
+            await _dataContext.SaveChangesAsync();
+            return item;
+        }
+
         public async Task<BlogItem> GetBlogItemAsync(string id)
         {
             return await _dataContext.BlogItems.Include(t => t.Likes).Include(t => t.Tags).ThenInclude(t=>t.Tag).Include(u => u.User)
@@ -26,6 +33,12 @@ namespace WebTextForum.Repository
 
             return (await item.Include(t => t.Tags).Skip(perPage * pageId).Take(perPage).ToListAsync(),
                 item.Count());
+        }
+
+        public async Task<IEnumerable<BlogItem>> GetRepliesToPost(string id)
+        {
+            return await _dataContext.BlogItems.Include(t => t.Likes).Include(t => t.Tags).ThenInclude(t => t.Tag).Include(u => u.User)
+                .Where(item=>item.BlogItemParentId==id).OrderBy(o=>o.CreatedDate).ToListAsync();
         }
 
         public async Task SaveChangesAsync()
