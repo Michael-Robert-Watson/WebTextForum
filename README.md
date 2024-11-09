@@ -26,3 +26,7 @@ The forum index does not have:
 * an ORDERING change.
 * a FILTER.
 * PAGING yet.
+
+And - when using the API for the Angular endpoints - I secured those using a Bearer token - and this is the Api Key: WebTextForumSecretKey!!@@=
+
+I also made an extension method to convert the Entity objects to the View Model for returning to the calls - named ToDto() - to ensure the entities were not returned to the controllers
