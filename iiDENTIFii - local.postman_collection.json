@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "8b4f6815-55af-4008-abf1-7a2f186f55b4",
+		"name": "iiDENTIFii - local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16765874"
+	},
+	"item": [
+		{
+			"name": "GetAllPosts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7264/api/GEtAllPosts",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7264",
+					"path": [
+						"api",
+						"GEtAllPosts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPagedPosts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "WebTextForumSecretKey!!@@=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7264/api/GetPagedPosts?page=0&perPage=3",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7264",
+					"path": [
+						"api",
+						"GetPagedPosts"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "perPage",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBlogDetails",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "WebTextForumSecretKey!!@@=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7264/api/BlogDetails/3",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7264",
+					"path": [
+						"api",
+						"BlogDetails",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BlogDetailsLike",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "WebTextForumSecretKey!!@@=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7264/api/BlogDetailsLike/3?userId=81238f4c-c86c-4498-a9c0-0d91bf7cf85d",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7264",
+					"path": [
+						"api",
+						"BlogDetailsLike",
+						"3"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "81238f4c-c86c-4498-a9c0-0d91bf7cf85d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BlogDetailsUpdate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "WebTextForumSecretKey!!@@=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "tagIds",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "tagIds",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "tagIds",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "tagIds",
+							"value": "4",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:7264/api/BlogDetailsUpdate/7a45f565-1898-4ddc-9f4f-cda4ead41732",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7264",
+					"path": [
+						"api",
+						"BlogDetailsUpdate",
+						"7a45f565-1898-4ddc-9f4f-cda4ead41732"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
