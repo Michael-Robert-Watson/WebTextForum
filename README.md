@@ -23,6 +23,6 @@ The 1 main issue that I had with SQLite was that the auto increment identity was
 Changed the Tag id to a numeric string rather - anf the user id to a numeric Id as well
 
 The forum index does not have:
-* an ORDERING change
-* a FILTER
-* PAGING yet
+* an ORDERING change.
+* a FILTER.
+* PAGING yet.
