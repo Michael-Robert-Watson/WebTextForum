@@ -8,6 +8,6 @@ namespace WebTextForum.Interfaces
         Task<(IEnumerable<BlogItem>, int)> GetBlogItemsAsync(int pageId, int perPage);
         Task<BlogItem> GetBlogItemAsync(string id);
         Task SaveChangesAsync();
-        Task<IEnumerable<BlogItem>> GetRepliesToPost(string id);
+        Task<IEnumerable<BlogItem>> GetRepliesToPostAsync(string id);
     }
 }

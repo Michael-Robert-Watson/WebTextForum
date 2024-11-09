@@ -5,6 +5,8 @@ namespace WebTextForum.ViewModel
 {
     public class BlogItemViewModel
     {
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
         [JsonPropertyName("createdDate")]
         public string CreatedDate { get; set; }
         [JsonPropertyName("user")]
@@ -16,13 +18,13 @@ namespace WebTextForum.ViewModel
         [JsonPropertyName("likes")]
         public int Likes { get; set; }
         [JsonPropertyName("tags")]
-        public object[] Tags { get; set; }
+        public List<NameValue> Tags { get; set; }
         [JsonPropertyName("likedByUser")]
         public bool LikedByUser { get; set; }
         [JsonPropertyName("isYourComment")]
         public bool IsYourComment { get; set; }
         [JsonPropertyName("allTags")]
-        public object[] AllTags { get; set; }
+        public List<NameValue> AllTags { get; set; }
         [JsonPropertyName("replies")]
         public List<BlogItemViewModel> Replies { get; set; }
     }

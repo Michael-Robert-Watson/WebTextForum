@@ -27,22 +27,22 @@ namespace WebTextForum.Helpers
             modelBuilder.Entity<Tag>().HasData(
                 new Tag
                 {
-                    Id = "0",
+                    Id = "1",
                     Name = "Misleading or False Information"
                 },
                 new Tag
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = "2",
                     Name = "News"
                 },
                 new Tag
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = "3",
                     Name = "Personal"
                 },
                 new Tag
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = "4",
                     Name = "Code"
                 });
 
@@ -52,20 +52,19 @@ namespace WebTextForum.Helpers
             var name = "Moderator";
             var password = "password";
             string moderatorRoleId = createRole(modelBuilder, name);
-            CreateUser(modelBuilder, hasher, moderatorRoleId, name, password, $"{name}1@mail.com");
+            CreateUser(modelBuilder, hasher, moderatorRoleId, name, password, $"{name}1@mail.com", "1");
 
             name = "User";
             string userRoleId = createRole(modelBuilder, name);
-            CreateUser(modelBuilder, hasher, userRoleId, $"{name}1", password, $"{name}1@mail.com");
-            CreateUser(modelBuilder, hasher, userRoleId, $"{name}2", password, $"{name}2@mail.com");
-            CreateUser(modelBuilder, hasher, userRoleId, $"{name}3", password, $"{name}3@mail.com");
-            CreateUser(modelBuilder, hasher, userRoleId, $"{name}4", password, $"{name}4@mail.com");
+            CreateUser(modelBuilder, hasher, userRoleId, $"{name}1", password, $"{name}1@mail.com", "2");
+            CreateUser(modelBuilder, hasher, userRoleId, $"{name}2", password, $"{name}2@mail.com", "3");
+            CreateUser(modelBuilder, hasher, userRoleId, $"{name}3", password, $"{name}3@mail.com", "4");
+            CreateUser(modelBuilder, hasher, userRoleId, $"{name}4", password, $"{name}4@mail.com", "5");
         }
 
-        private static void CreateUser(ModelBuilder modelBuilder, PasswordHasher<IdentityUser> hasher, string UserRoleId, string name, string password, string email)
+        private static void CreateUser(ModelBuilder modelBuilder, PasswordHasher<IdentityUser> hasher, string UserRoleId, string name, string password, string email, string userId)
         {
             //Seeding the User to AspNetUsers table
-            string userId = Guid.NewGuid().ToString();
             var user = new IdentityUser
             {
                 Id = userId,

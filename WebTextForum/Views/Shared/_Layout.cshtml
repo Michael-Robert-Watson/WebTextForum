@@ -29,7 +29,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Forum" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">@(User.Identity.IsAuthenticated ? $"Logout - {User.Identity.Name}" : "Login")</a>
                         </li>
                     </ul>
                 </div>

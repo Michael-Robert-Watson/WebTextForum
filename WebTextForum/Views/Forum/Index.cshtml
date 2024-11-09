@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Home Page";
     var userCanSave = User.Claims.Any(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", StringComparison.InvariantCultureIgnoreCase) && c.Value.Equals("Moderator", StringComparison.InvariantCultureIgnoreCase));
-    var userCanReply = User != null;
+    var userCanReply = User.Identity.IsAuthenticated;
 }
 
 <div class="text-center">
@@ -18,22 +18,31 @@
         <th>Comment</th>
     </tr>
     @{
-        foreach(var item in Model.Items)
+        foreach (var item in Model.Items)
         {
-            var warning = item.Tags.Any(t=>t.TagId=="0");
-                        <tr class="forum_style trItem" blogId="@item.Id" @(warning?"style=background:coral":string.Empty)>
-                        <td>@(item.CreatedDate.ToString("dd MMM yyyy HH:mm"))</td>
-                        <td>@(item.User.UserName)</td>
-                        <td>@(item.Likes?.Count)</td>
-                        <td>@(item.Comment.Length>50?$"{item.Comment.Substring(0,50)}...":item.Comment)</td>
-                    </tr>
-    }}
-    @if (userCanSave)
+            var warning = item.Tags.Any(t => t.Value == "1");
+            <tr class="forum_style trItem" blogId="@item.Id" @(warning ? "style=background:coral" : string.Empty)>
+                <td>@(item.CreatedDate)</td>
+                <td>@(item.User)</td>
+                <td>@(item.Likes)</td>
+                <td>@(item.Comment.Length > 50 ? $"{item.Comment.Substring(0, 50)}..." : item.Comment)</td>
+            </tr>
+        }
+        if (!Model.Items.Any())
+        {
+            <tr>
+                <td colspan="4">
+                    There are no items in this forum yet.
+                </td>
+            </tr>
+        }
+    }
+    @if (userCanReply)
     {
         <tr>
-        <td colspan="4">
+            <td colspan="4">
                 <button type="button" class="btn btn-primary" onclick="addNewItem()">Add New Blog Item</button>
-        </td>
+            </td>
         </tr>
     }
 </table>
@@ -102,7 +111,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default closeAddModal" data-dismiss="modal">Close</button>
-                @if (userCanSave)
+                @if (userCanReply)
                 {
                     <button type="button" class="btn btn-primary" onclick="saveAddItem()">Save changes</button>
                 }
@@ -113,13 +122,16 @@
 
 <script>
     let blogId = 0;
+    $("#viewModal").on("hidden.bs.modal", function () {
+        location.reload();
+    });
     function addComment() {
         $('#replyCommentGroup').show();
         $('#cmdSaveReply').show();
-        $('#cmdSaveChanges').hide(); 
+        $('#cmdSaveChanges').hide();
         $('#cmdReply').hide();
     }
-    function addNewItem(){ 
+    function addNewItem() {
         // clean controls
         $('#addModal').modal('toggle');
     }
@@ -127,7 +139,7 @@
         let val = $(e.currentTarget).prop('checked');
         likeItemToggle(blogId);
     });
-    $('.trItem').on('click', function (e) { 
+    $('.trItem').on('click', function (e) {
         blogId = $(e.currentTarget).attr('blogId');
         loadItem(blogId);
         $('#viewModal').modal('toggle');
@@ -136,10 +148,9 @@
         $('#viewModal').modal('hide');
     });
     $('.closeAddModal').on('click', () => {
-        $('#AddModal').modal('hide');
+        $('#addModal').modal('hide');
     });
-    function loadItem(id)
-    {        
+    function loadItem(id) {
         $.ajax({
             url: '/forum/BlogDetails/' + id,
             success:
@@ -151,31 +162,37 @@
                     $('#chkLike').prop('checked', result.likedByUser);
                     if (result.isYourComment) { $('#chkLike').hide(); }
                     else { $('#chkLike').show(); }
+
+                    $('#replyCommentGroup').hide();
+                    $('#cmdReply').show();
+                    $('#cmdSaveReply').hide();
+
+
     @if (userCanSave)
     {
-    <text>
-            if (!result.allTags || result.allTags.length == 0) {
-                $('#grpTags').hide();
-        }
-            else {
-                $('#grpTags').show();
-                $('#tags').html(result.allTags.map((x) => `<br /><label class="form-label"><input type='checkbox' class="allTags" value=${x.value} ${result.tags.find((item)=>x.value===item.value)?'checked':''} />${x.text}</label>`));
-        }
-    </text>    
+        <text>
+                                if (!result.allTags || result.allTags.length == 0) {
+                                    $('#grpTags').hide();
+                }
+                                else {
+                                    $('#grpTags').show();
+                        $('#tags').html(result.allTags.map((x) => `<br /><label class="form-label"><input type='checkbox' class="allTags" value=${x.value} ${result.tags.find((item) => x.value === item.value) ? 'checked' : ''} />${x.text}</label>`));
+                }
+        </text>
     }
     else
     {
-        <text>                    
-            if (!result.tags || result.tags.length == 0) {
-                        $('#grpTags').hide();
-                    }
-                    else {
-                        $('#grpTags').show();
-                        $('#tags').html(result.tags.map((x) => `<li value=${x.value}>${x.text}</li>`));
-                    }
+        <text>
+                                if (!result.tags || result.tags.length == 0) {
+                                    $('#grpTags').hide();
+                            }
+                                else {
+                                    $('#grpTags').show();
+                                $('#tags').html(result.tags.map((x) => `<li value=${x.value}>${x.text}</li>`));
+                            }
         </text>
     }
-                    if (result.replies && result.replies.length > 0) {
+                        if (result.replies && result.replies.length > 0) {
                         $('#reply').html(result.replies.map((x) => `<hr /><p title='Replied by ${x.user} on ${x.createdDate}'>${x.comment}</p><hr />`));
                         $('#replys').show();
                     }
@@ -185,11 +202,10 @@
                 }
         });
     }
-    function likeItemToggle(id)
-    {        
+    function likeItemToggle(id) {
         $.ajax({
             url: '/forum/BlogDetailsLike/' + id,
-            type:'PATCH',
+            type: 'PATCH',
             success:
                 function (result) {
                     $('#dateCreated').text(result.createdDate);
@@ -199,16 +215,17 @@
                 }
         });
     }
-    function saveItemChanges() { 
+    function saveItemChanges() {
         let tags = [];
-        $('.allTags').each((e,t) => {
+        $('.allTags').each((e, t) => {
             if (t.checked) {
                 tags.push(t.value);
-            }});
-        
+            }
+        });
+
         $.ajax({
             url: '/forum/BlogDetailsUpdate/' + blogId,
-            data: { tagIds : tags },
+            data: { tagIds: tags },
             type: 'POST',
             success:
                 function (result) {
@@ -218,11 +235,14 @@
         });
     }
     function saveAddItem() {
-        debugger;
         var comment = $('#addComment').val();
+        if (!comment.trim()) {
+            alert("Please enter a comment before you try and submit");
+            return;
+        }
         $.ajax({
             url: '/forum/BlogDetailsAddPost',
-            data: { newComment : comment },
+            data: { newComment: comment },
             type: 'POST',
             success:
                 function (result) {
@@ -232,11 +252,14 @@
         });
     }
     function saveComment() {
-        debugger;
         var comment = $('#replyComment').val();
+        if (!comment.trim()) {
+            alert("Please enter a comment before you try and submit");
+            return;
+        }
         $.ajax({
             url: '/forum/BlogDetailsAddReply/' + blogId,
-            data: { newComment : comment },
+            data: { newComment: comment },
             type: 'POST',
             success:
                 function (result) {
@@ -245,7 +268,4 @@
                 }
         });
     }
-    $('#replyCommentGroup').hide();
-    $('#cmdReply').show();
-    $('#cmdSaveReply').hide();
 </script>

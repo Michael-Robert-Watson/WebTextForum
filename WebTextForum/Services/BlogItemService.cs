@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
-using System.Security.Principal;
 using WebTextForum.Entities;
+using WebTextForum.Helpers;
 using WebTextForum.Interfaces;
 using WebTextForum.ViewModel;
 
@@ -17,10 +17,15 @@ namespace WebTextForum.Services
             _TagsRepository = tagsRepository;
         }
 
-        public async Task AddComment(string comment, ClaimsPrincipal user)
+        public async Task AddCommentAsync(string comment, ClaimsPrincipal user)
         {
             var userId = getUserId(user);
-            await _blogItemsRepository.AddBlogItemsAsync(new Entities.BlogItem()
+            await AddCommentAsync(comment, userId);
+        }
+
+        public async Task AddCommentAsync(string comment, string userId)
+        {
+            await _blogItemsRepository.AddBlogItemsAsync(new BlogItem()
             {
                 Id = Guid.NewGuid().ToString(),
                 Comment = comment,
@@ -29,27 +34,23 @@ namespace WebTextForum.Services
             });
         }
 
-        public async Task AddReply(string id, ClaimsPrincipal user, string comment)
+        public async Task AddReplyAsync(string id, ClaimsPrincipal user, string comment)
         {
-            try
-            {
-                var userId = getUserId(user);
-                await _blogItemsRepository.AddBlogItemsAsync(new Entities.BlogItem()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    BlogItemParentId = id,
-                    Comment = comment,
-                    CreatedDate = DateTime.Now,
-                    UserId = userId
-                });
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            var userId = getUserId(user);
+            await AddReplyAsync(id, userId, comment);
         }
 
+        public async Task AddReplyAsync(string id, string userId, string comment)
+        {
+            await _blogItemsRepository.AddBlogItemsAsync(new BlogItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                BlogItemParentId = id,
+                Comment = comment,
+                CreatedDate = DateTime.Now,
+                UserId = userId
+            });
+        }
         public async Task<BlogItemViewModel> GetBlogItemAsync(string id, ClaimsPrincipal user)
         {
             var item = await _blogItemsRepository.GetBlogItemAsync(id);
@@ -59,34 +60,18 @@ namespace WebTextForum.Services
             }
 
             var userId = getUserId(user);
-            BlogItemViewModel model = await GetBlogItem(item, userId);
+            BlogItemViewModel model = await item.ToDto(userId, _TagsRepository);
 
-            var replies = await _blogItemsRepository.GetRepliesToPost(id);
+            var replies = await _blogItemsRepository.GetRepliesToPostAsync(id);
             foreach (var rep in replies)
             {
-                model.Replies.Add(await GetBlogItem(rep, userId));
+                model.Replies.Add(await rep.ToDto(userId, _TagsRepository));
             }
 
             return model;
         }
 
-        private async Task<BlogItemViewModel> GetBlogItem(BlogItem item, string userId)
-        {
-            return new BlogItemViewModel()
-            {
-                Comment = item.Comment,
-                CreatedDate = item.CreatedDate.ToString("dd MMM yyyy HH:mm"),
-                Likes = item.Likes?.Count() ?? 0,
-                Tags = item.Tags?.Select(t => new { text = t.Tag.Name, value = t.Tag.Id.ToString() }).ToArray() ?? [],
-                User = item.User?.UserName ?? "Unknown",
-                LikedByUser = item.Likes.Any(u => u.UserId == userId),
-                AllTags = (await _TagsRepository.GetTagsAsync()).Select(t => new { text = t.Name, value = t.Id.ToString() }).ToArray() ?? [],
-                IsYourComment = item.User.Id == userId,
-                Replies = new List<BlogItemViewModel>()
-            };
-        }
-
-        public async Task<BlogItemViewModel> GetBlogItemLikeAsync(string id, System.Security.Claims.ClaimsPrincipal user)
+        public async Task<BlogItemViewModel> SetBlogItemLikeAsync(string id, ClaimsPrincipal user)
         {
             var item = await _blogItemsRepository.GetBlogItemAsync(id);
             if (item == null)
@@ -96,6 +81,17 @@ namespace WebTextForum.Services
 
             var userId = user.Identity.IsAuthenticated ? user.Claims.Where(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault().Value
                 : string.Empty;
+
+            return await SetBlogItemLikeAsync(id, userId);
+        }
+
+        public async Task<BlogItemViewModel> SetBlogItemLikeAsync(string id, string userId)
+        {
+            var item = await _blogItemsRepository.GetBlogItemAsync(id);
+            if (item == null)
+            {
+                throw new Exception($"Blog Item not found for {id}");
+            }
 
             if (item.Likes?.Count() == 0 || !item.Likes.Any(u => u.UserId == userId))
             {
@@ -113,42 +109,35 @@ namespace WebTextForum.Services
                 await _blogItemsRepository.SaveChangesAsync();
             }
 
-            var model = new BlogItemViewModel()
-            {
-                Comment = item.Comment,
-                CreatedDate = item.CreatedDate.ToString("dd MMM yyyy HH:mm"),
-                Likes = item.Likes?.Count() ?? 0,
-                Tags = item.Tags?.Select(t => new { text = t.Tag.Name, value = t.Tag.Id.ToString() }).ToArray() ?? [],
-                User = item.User.UserName ?? "Unknown",
-                LikedByUser = item.Likes.Any(u => u.UserId == userId),
-                AllTags = (await _TagsRepository.GetTagsAsync()).Select(t => new { text = t.Name, value = t.Id.ToString() }).ToArray() ?? []
-            };
-
-            return model;
+            return await item.ToDto(userId, _TagsRepository);
         }
 
-        public async Task<BlogItemsViewModel> GetBlogItemsAsync(int pageId, int perPage, IIdentity user)
+        public async Task<BlogItemsViewModel> GetBlogItemsAsync(int pageId, int perPage)
         {
             var (items, count) = await _blogItemsRepository.GetBlogItemsAsync(pageId, perPage);
             var model = new BlogItemsViewModel
             {
-                User = user,
-                Items = items.ToList(),
+                Items = await items.ToDto(null, _TagsRepository),
                 Count = count,
                 PageNumber = pageId
             };
             return model;
         }
 
-        public async Task UpdateTags(string id, string[] tagIds, ClaimsPrincipal user)
+        public async Task UpdateTagsAsync(string id, string[] tagIds, ClaimsPrincipal user)
+        {
+            var userId = user.Claims.Where(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault().Value;
+
+            await UpdateTagsAsync(id, tagIds, userId);
+        }
+
+        public async Task UpdateTagsAsync(string id, string[] tagIds, string userId)
         {
             var item = await _blogItemsRepository.GetBlogItemAsync(id);
             if (item == null)
             {
                 throw new Exception($"Blog Item not found for {id}");
             }
-
-            var userId = user.Claims.Where(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault().Value;
 
             item.Tags.Clear();
             foreach (var tag in tagIds)
@@ -167,11 +156,9 @@ namespace WebTextForum.Services
 
         private string getUserId(ClaimsPrincipal user)
         {
-            return user.Identity.IsAuthenticated
+            return user?.Identity.IsAuthenticated ?? false
                 ? user.Claims.Where(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault().Value
                 : string.Empty;
         }
-
-
     }
 }

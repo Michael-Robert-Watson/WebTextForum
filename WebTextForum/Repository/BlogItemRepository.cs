@@ -35,7 +35,7 @@ namespace WebTextForum.Repository
                 item.Count());
         }
 
-        public async Task<IEnumerable<BlogItem>> GetRepliesToPost(string id)
+        public async Task<IEnumerable<BlogItem>> GetRepliesToPostAsync(string id)
         {
             return await _dataContext.BlogItems.Include(t => t.Likes).Include(t => t.Tags).ThenInclude(t => t.Tag).Include(u => u.User)
                 .Where(item=>item.BlogItemParentId==id).OrderBy(o=>o.CreatedDate).ToListAsync();

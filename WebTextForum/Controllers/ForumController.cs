@@ -24,7 +24,7 @@ namespace WebTextForum.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            BlogItemsViewModel model = await _blogItemService.GetBlogItemsAsync(0, 20, User.Identity);
+            BlogItemsViewModel model = await _blogItemService.GetBlogItemsAsync(0, 20);
             return View(model);
         }
 
@@ -51,7 +51,7 @@ namespace WebTextForum.Controllers
         [Route("Forum/BlogDetailsLike/{id}")]
         public async Task<JsonResult> BlogDetailsLike([FromRoute] string id)
         {
-            var item = await _blogItemService.GetBlogItemLikeAsync(id, User);
+            var item = await _blogItemService.SetBlogItemLikeAsync(id, User);
             return new JsonResult(item);
         }
         
@@ -60,7 +60,7 @@ namespace WebTextForum.Controllers
         [Route("Forum/BlogDetailsUpdate/{id}")]
         public async Task<JsonResult> BlogDetailsUpdate([FromRoute] string id, string[] tagIds)
         {
-            await _blogItemService.UpdateTags(id, tagIds, User);
+            await _blogItemService.UpdateTagsAsync(id, tagIds, User);
             return new JsonResult(true);
         }
         
@@ -69,7 +69,7 @@ namespace WebTextForum.Controllers
         [Route("Forum/BlogDetailsAddReply/{id}")]
         public async Task<JsonResult> BlogDetailsAddReply([FromRoute] string id, string newComment)
         {
-            await _blogItemService.AddReply(id, User, newComment);
+            await _blogItemService.AddReplyAsync(id, User, newComment);
             return new JsonResult(true);
         }
         
@@ -77,7 +77,7 @@ namespace WebTextForum.Controllers
         [Authorize]
         public async Task<JsonResult> BlogDetailsAddPost(string newComment)
         {
-            await _blogItemService.AddComment(newComment, User);
+            await _blogItemService.AddCommentAsync(newComment, User);
             return new JsonResult(true);
         }
     }
