@@ -19,4 +19,10 @@ Note - when you are viewing the comment with replies - if you hover over the rep
 
 There are a number of tests that are part of the system
 
-The 1 main issue that I had with SQLite was that the auto increment identity was not available - so in tables that I could - I used the int and then used the guid(tostring()) for the rest - this causes problems for the postmad scripts and you'll have to update the guids yourself
+The 1 main issue that I had with SQLite was that the auto increment identity was not available - so in tables that I could - I used the int and then used the guid(tostring()) for the rest - this causes problems for the postman scripts and you'll have to update the guids yourself
+Changed the Tag id to a numeric string rather - anf the user id to a numeric Id as well
+
+The forum index does not have:
+* an ORDERING change
+* a FILTER
+* PAGING yet
