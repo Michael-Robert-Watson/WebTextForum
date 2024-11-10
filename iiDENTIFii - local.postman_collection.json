@@ -9,6 +9,16 @@
 		{
 			"name": "GetAllPosts",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "WebTextForumSecretKey!!@@=",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {

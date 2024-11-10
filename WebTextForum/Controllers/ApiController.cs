@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebTextForum.Filters;
 using WebTextForum.Interfaces;
 
@@ -22,22 +23,47 @@ namespace WebTextForum.Controllers
 
         public async Task<JsonResult> GetAllPosts()
         {
-            var items = await _blogItemService.GetBlogItemsAsync(0, int.MaxValue, Enums.OrderColumn.Date, false);
-            return new JsonResult(items);
+            try
+            {
+                var items = await _blogItemService.GetBlogItemsAsync(0, int.MaxValue, Enums.OrderColumn.Date, false);
+                return new JsonResult(items);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error getting all posts {@ex}", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<JsonResult> GetPagedPosts(int page, int perPage)
         {
-            var items = await _blogItemService.GetBlogItemsAsync(page, perPage, Enums.OrderColumn.Date, false);
-            return new JsonResult(items);
+            try
+            {
+                var items = await _blogItemService.GetBlogItemsAsync(page, perPage, Enums.OrderColumn.Date, false);
+                return new JsonResult(items);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error getting paged posts: [age-{@page} perpage-{@perPage} {@ex}", page, perPage, ex);
+                throw new Exception(ex.Message);
+            }
+            
         }
 
         [HttpGet]
         [Route("Api/BlogDetails/{id}")]
         public async Task<JsonResult> BlogDetails([FromRoute] string id)
         {
-            var item = await _blogItemService.GetBlogItemAsync(id, null);
-            return new JsonResult(item);
+            try
+            {
+                var item = await _blogItemService.GetBlogItemAsync(id, null);
+                return new JsonResult(item);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error blog details for Item id: {@id} {@ex}", id, ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         [HttpPatch]
@@ -52,7 +78,7 @@ namespace WebTextForum.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("Error blog details Like for Item id: {@id} {@ex}", id, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -68,7 +94,7 @@ namespace WebTextForum.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("Error updating blog details for Item id: {@id} {ex}", id, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -84,7 +110,7 @@ namespace WebTextForum.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("Error adding reply to blog for Item id: {@id} {@ex}", id, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -99,7 +125,7 @@ namespace WebTextForum.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("Error adding post to blog {@ex}", ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }
