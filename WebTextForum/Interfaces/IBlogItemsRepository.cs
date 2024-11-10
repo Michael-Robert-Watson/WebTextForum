@@ -9,5 +9,6 @@ namespace WebTextForum.Interfaces
         Task<BlogItem> GetBlogItemAsync(string id);
         Task SaveChangesAsync();
         Task<IEnumerable<BlogItem>> GetRepliesToPostAsync(string id);
+        Task<(IEnumerable<BlogItem>, int)> SearchBlogItemsAsync(int pageId, int perPage, DateTime fromDate, DateTime toDate);
     }
 }

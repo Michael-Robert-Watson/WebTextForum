@@ -16,5 +16,6 @@ namespace WebTextForum.Interfaces
         Task<BlogItemsViewModel> GetBlogItemsAsync(int pageId, int perPage);
         Task UpdateTagsAsync(string id, string[] tagIds, ClaimsPrincipal user);
         Task UpdateTagsAsync(string id, string[] tagIds, string userId);
+        Task<BlogItemsViewModel> SearchBlogItemsAsync(int page, int pageSize, DateTime fromDate, DateTime toDate);
     }
 }

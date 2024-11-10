@@ -10,6 +10,8 @@ namespace WebTextForum.ViewModel
         public  List<BlogItemViewModel> Items { get; set; }
         public int Count { get; set; }
         public int PageNumber { get; set; }
+        public int PerPage { get; set; }
+        public bool Searched { get; set; }
     }
     public class NameValue()
     {

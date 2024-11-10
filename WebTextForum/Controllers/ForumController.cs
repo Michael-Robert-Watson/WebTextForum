@@ -12,6 +12,7 @@ namespace WebTextForum.Controllers
         private readonly ILogger<ForumController> _logger;
         private readonly IAppUserService _appUserService;
         private readonly IBlogItemService _blogItemService;
+        private const int pageSize = 5; // should be in config...!
 
         public ForumController(ILogger<ForumController> logger, IAppUserService appUserService, IBlogItemService blogItemService)
         {
@@ -22,9 +23,24 @@ namespace WebTextForum.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, DateTime? fromDate, DateTime? toDate)
         {
-            BlogItemsViewModel model = await _blogItemService.GetBlogItemsAsync(0, 20);
+            if (page < 0)
+            {
+                page = 0;
+            }
+
+            BlogItemsViewModel model = null;
+            if (fromDate != null && toDate != null)
+            {
+                model = await _blogItemService.SearchBlogItemsAsync(page.GetValueOrDefault(0), pageSize, fromDate.Value, toDate.Value);
+                model.Searched = true;
+            }
+            else
+            {
+                model = await _blogItemService.GetBlogItemsAsync(page.GetValueOrDefault(0), pageSize);
+            }
+
             return View(model);
         }
 

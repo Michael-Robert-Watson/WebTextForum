@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 using WebTextForum.Entities;
 using WebTextForum.Helpers;
 using WebTextForum.Interfaces;
@@ -119,7 +120,8 @@ namespace WebTextForum.Services
             {
                 Items = await items.ToDto(null, _TagsRepository),
                 Count = count,
-                PageNumber = pageId
+                PageNumber = pageId,
+                PerPage = perPage
             };
             return model;
         }
@@ -159,6 +161,19 @@ namespace WebTextForum.Services
             return user?.Identity.IsAuthenticated ?? false
                 ? user.Claims.Where(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault().Value
                 : string.Empty;
+        }
+
+        public async Task<BlogItemsViewModel> SearchBlogItemsAsync(int pageId, int perPage, DateTime fromDate, DateTime toDate)
+        {
+            var (items, count) = await _blogItemsRepository.SearchBlogItemsAsync(pageId, perPage, fromDate, toDate);
+            var model = new BlogItemsViewModel
+            {
+                Items = await items.ToDto(null, _TagsRepository),
+                Count = count,
+                PageNumber = pageId,
+                PerPage = perPage
+            };
+            return model;
         }
     }
 }

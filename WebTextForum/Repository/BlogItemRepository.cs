@@ -45,5 +45,13 @@ namespace WebTextForum.Repository
         {
             await _dataContext.SaveChangesAsync();
         }
+
+        public async Task<(IEnumerable<BlogItem>, int)> SearchBlogItemsAsync(int pageId, int perPage, DateTime fromDate, DateTime toDate)
+        {
+            var item = _dataContext.BlogItems.Where(i=>i.CreatedDate>=fromDate && i.CreatedDate <= toDate).Include(t => t.Likes).Include(t => t.Tags).Include(u => u.User).Where(i => i.BlogItemParentId == null);
+
+            return (await item.Include(t => t.Tags).Skip(perPage * pageId).Take(perPage).ToListAsync(),
+                item.Count());
+        }
     }
 }

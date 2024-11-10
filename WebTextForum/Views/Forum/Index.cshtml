@@ -3,6 +3,7 @@
     ViewData["Title"] = "Home Page";
     var userCanSave = User.Claims.Any(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", StringComparison.InvariantCultureIgnoreCase) && c.Value.Equals("Moderator", StringComparison.InvariantCultureIgnoreCase));
     var userCanReply = User.Identity.IsAuthenticated;
+    var pageTotal = Model.Count / Model.PerPage;
 }
 
 <div class="text-center">
@@ -21,20 +22,43 @@
         foreach (var item in Model.Items)
         {
             var warning = item.Tags.Any(t => t.Value == "1");
-            <tr class="forum_style trItem" blogId="@item.Id" @(warning ? "style=background:coral" : string.Empty)>
-                <td>@(item.CreatedDate)</td>
-                <td>@(item.User)</td>
-                <td>@(item.Likes)</td>
-                <td>@(item.Comment.Length > 50 ? $"{item.Comment.Substring(0, 50)}..." : item.Comment)</td>
-            </tr>
+                    <tr class="forum_style trItem" blogId="@item.Id" @(warning ? "style=background:coral" : string.Empty)>
+                        <td>@(item.CreatedDate)</td>
+                        <td>@(item.User)</td>
+                        <td>@(item.Likes)</td>
+                        <td>@(item.Comment.Length > 50 ? $"{item.Comment.Substring(0, 50)}..." : item.Comment)</td>
+                    </tr>
         }
         if (!Model.Items.Any())
         {
-            <tr>
-                <td colspan="4">
-                    There are no items in this forum yet.
-                </td>
-            </tr>
+                    <tr>
+                        <td colspan="4">
+                            There are no items in this forum yet.
+                        </td>
+                    </tr>
+        }
+        else
+        {
+                    <tr>
+                        <td colspan="4">
+                            @if (Model.PageNumber > 0)
+                    {
+                                <a href="index?page=0">Start</a>
+                                <a href="index?page=@(Model.PageNumber-1)">Previous</a>
+                    }
+                            Page @(Model.PageNumber + 1) of @(pageTotal + 1)
+                            @if (Model.PageNumber < pageTotal)
+                    {
+                                <a href="index?page=@(Model.PageNumber+1)">Next</a>
+                                <a href="index?page=@(pageTotal)">End</a>
+                    }
+                            <button type="button" class="btn btn-primary" onclick="search()">Search</button>
+                            @if (Model.Searched)
+                            {
+                                <a href="index">Clear Search</a>
+                            }
+                        </td>
+                    </tr>
         }
     }
     @if (userCanReply)
@@ -120,11 +144,40 @@
     </div>
 </div>
 
+<!-- Search Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="closeSearchModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="searchModalLabel">Search Blog Posts</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-group">
+                    <label class="form-label">From Date</label>
+                    <input type="date" id="fromDate" class="form-control" />
+                </div>
+                <div class="row form-group">
+                    <label class="form-label">To Date</label>
+                    <input type="date" id="toDate" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default closeSearchModal" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="searchPosts()">Search Blog Posts</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     let blogId = 0;
     $("#viewModal").on("hidden.bs.modal", function () {
         location.reload();
     });
+    function search() {
+        $('#searchModal').modal('toggle');
+    }
     function addComment() {
         $('#replyCommentGroup').show();
         $('#cmdSaveReply').show();
@@ -149,6 +202,9 @@
     });
     $('.closeAddModal').on('click', () => {
         $('#addModal').modal('hide');
+    });
+    $('.closeSearchModal').on('click', () => {
+        $('#searchModal').modal('hide');
     });
     function loadItem(id) {
         $.ajax({
@@ -214,6 +270,18 @@
                     $('#likes').text(result.likes);
                 }
         });
+    }
+    function searchPosts() {
+        debugger;
+        let fromDate = $('#fromDate').val();
+        let toDate = $('#toDate').val();
+
+        if (!fromDate || !toDate){
+            alert('Please select a From Date and a To Date to search for');
+            return;
+        }
+
+        window.location.href = `Index?fromDate=${fromDate}&toDate=${toDate}`;
     }
     function saveItemChanges() {
         let tags = [];
