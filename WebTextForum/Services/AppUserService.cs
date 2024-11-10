@@ -4,16 +4,10 @@ using WebTextForum.ViewModel;
 
 namespace WebTextForum.Services
 {
-    public class AppUserService : IAppUserService
+    public class AppUserService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : IAppUserService
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public AppUserService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private readonly UserManager<IdentityUser> _userManager = userManager;
+        private readonly SignInManager<IdentityUser> _signInManager = signInManager;
 
         public async Task<bool> LoginAsync(AppUserViewModel user)
         {

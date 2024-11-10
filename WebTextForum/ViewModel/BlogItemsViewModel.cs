@@ -1,6 +1,7 @@
 ﻿using System.Security.Principal;
 using System.Text.Json.Serialization;
 using WebTextForum.Entities;
+using WebTextForum.Enums;
 
 namespace WebTextForum.ViewModel
 {
@@ -12,6 +13,10 @@ namespace WebTextForum.ViewModel
         public int PageNumber { get; set; }
         public int PerPage { get; set; }
         public bool Searched { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public bool Desc { get; set; }
+        public OrderColumn OrderBy { get; set; }
     }
     public class NameValue()
     {

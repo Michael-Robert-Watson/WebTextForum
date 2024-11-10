@@ -22,13 +22,13 @@ namespace WebTextForum.Controllers
 
         public async Task<JsonResult> GetAllPosts()
         {
-            var items = await _blogItemService.GetBlogItemsAsync(0, int.MaxValue);
+            var items = await _blogItemService.GetBlogItemsAsync(0, int.MaxValue, Enums.OrderColumn.Date, false);
             return new JsonResult(items);
         }
 
         public async Task<JsonResult> GetPagedPosts(int page, int perPage)
         {
-            var items = await _blogItemService.GetBlogItemsAsync(page, perPage);
+            var items = await _blogItemService.GetBlogItemsAsync(page, perPage, Enums.OrderColumn.Date, false);
             return new JsonResult(items);
         }
 

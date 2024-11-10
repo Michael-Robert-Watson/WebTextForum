@@ -1,26 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using WebTextForum.Entities;
+using WebTextForum.Enums;
 using WebTextForum.Helpers;
 using WebTextForum.Interfaces;
 using WebTextForum.ViewModel;
 
 namespace WebTextForum.Services
 {
-    public class BlogItemService : IBlogItemService
+    public class BlogItemService(IBlogItemsRepository blogItemsRepository, ITagsRepository tagsRepository) : IBlogItemService
     {
-        private readonly IBlogItemsRepository _blogItemsRepository;
-        private readonly ITagsRepository _TagsRepository;
-
-        public BlogItemService(IBlogItemsRepository blogItemsRepository, ITagsRepository tagsRepository)
-        {
-            _blogItemsRepository = blogItemsRepository;
-            _TagsRepository = tagsRepository;
-        }
+        private readonly IBlogItemsRepository _blogItemsRepository = blogItemsRepository;
+        private readonly ITagsRepository _TagsRepository = tagsRepository;
 
         public async Task AddCommentAsync(string comment, ClaimsPrincipal user)
         {
-            var userId = getUserId(user);
+            var userId = GetUserId(user);
             await AddCommentAsync(comment, userId);
         }
 
@@ -37,7 +31,7 @@ namespace WebTextForum.Services
 
         public async Task AddReplyAsync(string id, ClaimsPrincipal user, string comment)
         {
-            var userId = getUserId(user);
+            var userId = GetUserId(user);
             await AddReplyAsync(id, userId, comment);
         }
 
@@ -54,13 +48,9 @@ namespace WebTextForum.Services
         }
         public async Task<BlogItemViewModel> GetBlogItemAsync(string id, ClaimsPrincipal user)
         {
-            var item = await _blogItemsRepository.GetBlogItemAsync(id);
-            if (item == null)
-            {
-                throw new Exception($"Blog Item not found for {id}");
-            }
+            var item = await _blogItemsRepository.GetBlogItemAsync(id) ?? throw new Exception($"Blog Item not found for {id}");
 
-            var userId = getUserId(user);
+            var userId = GetUserId(user);
             BlogItemViewModel model = await item.ToDto(userId, _TagsRepository);
 
             var replies = await _blogItemsRepository.GetRepliesToPostAsync(id);
@@ -74,11 +64,7 @@ namespace WebTextForum.Services
 
         public async Task<BlogItemViewModel> SetBlogItemLikeAsync(string id, ClaimsPrincipal user)
         {
-            var item = await _blogItemsRepository.GetBlogItemAsync(id);
-            if (item == null)
-            {
-                throw new Exception($"Blog Item not found for {id}");
-            }
+            var item = await _blogItemsRepository.GetBlogItemAsync(id) ?? throw new Exception($"Blog Item not found for {id}");
 
             var userId = user.Identity.IsAuthenticated ? user.Claims.Where(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault().Value
                 : string.Empty;
@@ -88,18 +74,16 @@ namespace WebTextForum.Services
 
         public async Task<BlogItemViewModel> SetBlogItemLikeAsync(string id, string userId)
         {
-            var item = await _blogItemsRepository.GetBlogItemAsync(id);
-            if (item == null)
-            {
-                throw new Exception($"Blog Item not found for {id}");
-            }
+            var item = await _blogItemsRepository.GetBlogItemAsync(id) ?? throw new Exception($"Blog Item not found for {id}");
 
             if (item.Likes?.Count() == 0 || !item.Likes.Any(u => u.UserId == userId))
             {
-                var like = new Entities.BlogItemLike();
-                like.UserId = userId;
-                like.CreatedDate = DateTime.Now;
-                like.Id = Guid.NewGuid().ToString();
+                var like = new Entities.BlogItemLike
+                {
+                    UserId = userId,
+                    CreatedDate = DateTime.Now,
+                    Id = Guid.NewGuid().ToString()
+                };
                 item.Likes.Add(like);
                 await _blogItemsRepository.SaveChangesAsync();
             }
@@ -113,9 +97,9 @@ namespace WebTextForum.Services
             return await item.ToDto(userId, _TagsRepository);
         }
 
-        public async Task<BlogItemsViewModel> GetBlogItemsAsync(int pageId, int perPage)
+        public async Task<BlogItemsViewModel> GetBlogItemsAsync(int pageId, int perPage, OrderColumn orderColumn, bool desc)
         {
-            var (items, count) = await _blogItemsRepository.GetBlogItemsAsync(pageId, perPage);
+            var (items, count) = await _blogItemsRepository.GetBlogItemsAsync(pageId, perPage, orderColumn, desc);
             var model = new BlogItemsViewModel
             {
                 Items = await items.ToDto(null, _TagsRepository),
@@ -135,11 +119,7 @@ namespace WebTextForum.Services
 
         public async Task UpdateTagsAsync(string id, string[] tagIds, string userId)
         {
-            var item = await _blogItemsRepository.GetBlogItemAsync(id);
-            if (item == null)
-            {
-                throw new Exception($"Blog Item not found for {id}");
-            }
+            var item = await _blogItemsRepository.GetBlogItemAsync(id) ?? throw new Exception($"Blog Item not found for {id}");
 
             item.Tags.Clear();
             foreach (var tag in tagIds)
@@ -156,16 +136,13 @@ namespace WebTextForum.Services
             await _blogItemsRepository.SaveChangesAsync();
         }
 
-        private string getUserId(ClaimsPrincipal user)
-        {
-            return user?.Identity.IsAuthenticated ?? false
+        private string GetUserId(ClaimsPrincipal user) => user?.Identity.IsAuthenticated ?? false
                 ? user.Claims.Where(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault().Value
                 : string.Empty;
-        }
 
-        public async Task<BlogItemsViewModel> SearchBlogItemsAsync(int pageId, int perPage, DateTime fromDate, DateTime toDate)
+        public async Task<BlogItemsViewModel> SearchBlogItemsAsync(int pageId, int perPage, DateTime fromDate, DateTime toDate, OrderColumn orderColumn, bool desc)
         {
-            var (items, count) = await _blogItemsRepository.SearchBlogItemsAsync(pageId, perPage, fromDate, toDate);
+            var (items, count) = await _blogItemsRepository.SearchBlogItemsAsync(pageId, perPage, fromDate, toDate, orderColumn, desc);
             var model = new BlogItemsViewModel
             {
                 Items = await items.ToDto(null, _TagsRepository),

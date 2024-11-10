@@ -8,15 +8,15 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to the WebTextForum</h1>
-    <p>Where you can (when logged in) blog about things, the moderator will tag them and you can comment on the posts and like</p>.  If not logged in, you can read and like the posts.
+    <p>Where you can (when logged in) blog about things, the moderator will tag them and you can comment on the posts and like.<br />If not logged in, you can read and like the posts.</p>
 </div>
 
 <table class="col-lg-10 col-sm-12">
     <tr>
-        <th>Created</th>
-        <th>Created by</th>
+        <th style="cursor:pointer" onclick="OrderBy(@((int)WebTextForum.Enums.OrderColumn.Date),@((!Model.Desc).ToString().ToLower()))">Created</th>
+        <th style="cursor:pointer" onclick="OrderBy(@((int)WebTextForum.Enums.OrderColumn.User),@((!Model.Desc).ToString().ToLower()))">Created by</th>
         <th>Likes</th>
-        <th>Comment</th>
+        <th style="cursor:pointer" onclick="OrderBy(@((int)WebTextForum.Enums.OrderColumn.Comment),@((!Model.Desc).ToString().ToLower()))">Comment</th>
     </tr>
     @{
         foreach (var item in Model.Items)
@@ -272,7 +272,6 @@
         });
     }
     function searchPosts() {
-        debugger;
         let fromDate = $('#fromDate').val();
         let toDate = $('#toDate').val();
 
@@ -282,6 +281,9 @@
         }
 
         window.location.href = `Index?fromDate=${fromDate}&toDate=${toDate}`;
+    }
+    function OrderBy(id, desc) {
+        window.location.href = `Index?@(String.IsNullOrEmpty(Model.FromDate) ? string.Empty : $"fromDate={Model.FromDate}")&@(String.IsNullOrEmpty(Model.FromDate) ? string.Empty : $"toDate={Model.ToDate}")&orderBy=${id}&desc=${desc}`;
     }
     function saveItemChanges() {
         let tags = [];
