@@ -3,7 +3,7 @@
     ViewData["Title"] = "Home Page";
     var userCanSave = User.Claims.Any(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", StringComparison.InvariantCultureIgnoreCase) && c.Value.Equals("Moderator", StringComparison.InvariantCultureIgnoreCase));
     var userCanReply = User.Identity.IsAuthenticated;
-    var pageTotal = Model.Count / Model.PerPage;
+    var pageTotal = (Model.Count-1) / Model.PerPage;
 }
 
 <div class="text-center">

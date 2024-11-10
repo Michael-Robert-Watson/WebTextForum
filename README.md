@@ -22,11 +22,6 @@ There are a number of tests that are part of the system (There could be a lot mo
 The 1 main issue (fought a bit with this but with the time limit - I stopped fighting for a solution and went with the MVP!) that I had with SQLite was that the auto increment identity was not available - so in tables that I could - I used the int and then used the guid(tostring()) for the rest - this causes problems for the postman scripts and you'll have to update the guids yourself
 Changed the Tag id to a numeric string rather - and the user id to a numeric Id as well
 
-The forum index does not have:
-* an ORDERING change.
-* a FILTER.
-* PAGING yet.
-
 And - when using the API for the Angular endpoints - I secured those using a Bearer token - and this is the Api Key: WebTextForumSecretKey!!@@=
 
 I also made an extension method to convert the Entity objects to the View Model for returning to the calls - named ToDto() - to ensure the entities were not returned to the controllers

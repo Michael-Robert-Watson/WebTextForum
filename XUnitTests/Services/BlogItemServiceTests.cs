@@ -1,5 +1,6 @@
 using NSubstitute;
 using WebTextForum.Entities;
+using WebTextForum.Enums;
 using WebTextForum.Interfaces;
 using WebTextForum.Services;
 
@@ -142,14 +143,14 @@ namespace XUnitTests.Services
                 } };
             int count = 46664;
 
-            blogRepo.GetBlogItemsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Task.FromResult<(IEnumerable<BlogItem>, int)>((list,count)));
+            blogRepo.GetBlogItemsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<OrderColumn>(), Arg.Any<bool>()).Returns(Task.FromResult<(IEnumerable<BlogItem>, int)>((list,count)));
             var tagRepo = Substitute.For<ITagsRepository>();
             tagRepo.GetTagsAsync().Returns(Task.FromResult<IEnumerable<Tag>>(new List<Tag>()));
 
             var svc = new BlogItemService(blogRepo, tagRepo);
 
             //act
-            var items = await svc.GetBlogItemsAsync(0,10);
+            var items = await svc.GetBlogItemsAsync(0,10, WebTextForum.Enums.OrderColumn.Date, true);
 
             //assert
             Assert.That(items.Items.Count, Is.EqualTo(2));
