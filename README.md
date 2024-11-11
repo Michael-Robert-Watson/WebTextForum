@@ -30,6 +30,6 @@ The paging in the Forum only happen after you have more than 5 items.
 
 I took that Moderators were also allowed to create posts too - just like Users.
 
-There is no sory on Like count, or search on tags and authors yet.
+There is no sort on search on tags and authors yet.
 
-NOTE: I have tested and noticed that the paging - loses the searched for results and defaults to the unsearched for set.
+NOTE: I have tested and noticed that the paging - loses the searched for results and defaults to the unsearched for set.  Can Sort on Likes now too.
