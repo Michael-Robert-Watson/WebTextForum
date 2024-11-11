@@ -11,5 +11,6 @@ namespace WebTextForum.Entities
         public DateTime CreatedDate { get; set; }
         [ForeignKey(nameof(IdentityUser.Id))]
         public string UserId { get; set; }
+        public virtual BlogItem BlogItem { get; set; }
     }
 }

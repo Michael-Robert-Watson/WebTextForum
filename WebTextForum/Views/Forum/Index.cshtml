@@ -15,7 +15,7 @@
     <tr>
         <th style="cursor:pointer" onclick="OrderBy(@((int)WebTextForum.Enums.OrderColumn.Date),@((!Model.Desc).ToString().ToLower()))">Created</th>
         <th style="cursor:pointer" onclick="OrderBy(@((int)WebTextForum.Enums.OrderColumn.User),@((!Model.Desc).ToString().ToLower()))">Created by</th>
-        <th>Likes</th>
+        <th style="cursor:pointer" onclick="OrderBy(@((int)WebTextForum.Enums.OrderColumn.Likes),@((!Model.Desc).ToString().ToLower()))">Likes</th>
         <th style="cursor:pointer" onclick="OrderBy(@((int)WebTextForum.Enums.OrderColumn.Comment),@((!Model.Desc).ToString().ToLower()))">Comment</th>
     </tr>
     @{
@@ -43,14 +43,14 @@
                         <td colspan="4">
                             @if (Model.PageNumber > 0)
                     {
-                                <a href="index?page=0">Start</a>
-                                <a href="index?page=@(Model.PageNumber-1)">Previous</a>
+                                <a href="index?@(String.IsNullOrEmpty(Model.FromDate) ? string.Empty : $"fromDate={Model.FromDate}")&@(String.IsNullOrEmpty(Model.ToDate) ? string.Empty : $"toDate={Model.ToDate}")&@($"orderBy={(int)Model.OrderBy}")&@($"desc={Model.Desc}")&page=0">Start</a>
+                                <a href="index?@(String.IsNullOrEmpty(Model.FromDate) ? string.Empty : $"fromDate={Model.FromDate}")&@(String.IsNullOrEmpty(Model.ToDate) ? string.Empty : $"toDate={Model.ToDate}")&@($"orderBy={(int)Model.OrderBy}")&@($"desc={Model.Desc}")&page=@(Model.PageNumber-1)">Previous</a>
                     }
                             Page @(Model.PageNumber + 1) of @(pageTotal + 1)
                             @if (Model.PageNumber < pageTotal)
                     {
-                                <a href="index?page=@(Model.PageNumber+1)">Next</a>
-                                <a href="index?page=@(pageTotal)">End</a>
+                                <a href="index?@(String.IsNullOrEmpty(Model.FromDate) ? string.Empty : $"fromDate={Model.FromDate}")&@(String.IsNullOrEmpty(Model.ToDate) ? string.Empty : $"toDate={Model.ToDate}")&@($"orderBy={(int)Model.OrderBy}")&@($"desc={Model.Desc}")&page=@(Model.PageNumber+1)">Next</a>
+                                <a href="index?@(String.IsNullOrEmpty(Model.FromDate) ? string.Empty : $"fromDate={Model.FromDate}")&@(String.IsNullOrEmpty(Model.ToDate) ? string.Empty : $"toDate={Model.ToDate}")&@($"orderBy={(int)Model.OrderBy}")&@($"desc={Model.Desc}")&page=@(pageTotal)">End</a>
                     }
                             <button type="button" class="btn btn-primary" onclick="search()">Search</button>
                             @if (Model.Searched)
