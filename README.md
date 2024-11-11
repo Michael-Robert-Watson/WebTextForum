@@ -25,3 +25,8 @@ Changed the Tag id to a numeric string rather - and the user id to a numeric Id 
 And - when using the API for the Angular endpoints - I secured those using a Bearer token - and this is the Api Key: WebTextForumSecretKey!!@@=
 
 I also made an extension method to convert the Entity objects to the View Model for returning to the calls - named ToDto() - to ensure the entities were not returned to the controllers
+
+The paging in the Forum only happen after you have more than 5 items.
+
+I took that Moderators were also allowed to create posts too - just like Users.
+
