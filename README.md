@@ -32,4 +32,4 @@ I took that Moderators were also allowed to create posts too - just like Users.
 
 There is no sory on Like count, or search on tags and authors yet.
 
-NOTE: I have tested and noticed that the paging - loses the searched for results and defaults to the unsearched for set.
+NOTE: (This should/could be resolved now) I have tested and noticed that the paging - loses the searched for results and defaults to the unsearched for set.
